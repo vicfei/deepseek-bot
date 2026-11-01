@@ -478,3 +478,9 @@
 - 用户定夺:改名批撤销(可能再改名);K.3/embedding 召回/随访批可开工。调度器插件化降级"按需"(账本重放恢复已兑现其大半价值,C.1 完全体形式无近期消费者——诚实降序记录)。
 - **K.3 设计稿落盘 docs/research/k3-privileged-ipc-design.md**(直推,研究文档):进程边界(authority 独占信任派生/授予、预算、R 闸、记忆写闸、任务闸、宪法校验;账本留宿主为 D1 裁决)/Unix socket JSON 行协议(八消息面)/宿主派生+systemd v2 升级路径/fail-closed 矩阵/宪法增补 C6a/C6b/C7+C2C3 锚点迁移一次重锚(兑现 E''"写闸入宪并入 K.3")/测试策略/NAGA_AUTHORITY_MODE 回退开关。**五个签核裁决点(A 父进程/B fail-closed 严格度/C 宪法增补/D1 账本边界/D2 回退开关)呈用户,全部附建议"如稿"。**
 - 下一步:待签核→K.3 实现批;平行可做:记忆 embedding 召回批(dashscope 已批)、随访合批(system_status 带 goal/notify 三态入账/naga usage)。
+
+## 2026-11-01 三次更名 PersonalAgent → dsh dot + 渊源节(用户命名决策)
+
+- 用户定名 **dsh dot** 并要求主页阐述与 DeepSeek Harness 的渊源。取证实录:节点上确有 deepseek-harness 官方仓(DeepSeek AI 开源,Cordis 时空可组合/一切皆插件范式)及 dsh 家族(dsh-desktop/dsh-super-agent/dsh-promo)——**渊源为真**:本项目设计期借的正是 Cordis/dsh 那套理念(用户早有明言),旗舰适配器亦为 deepseek。
+- 执行:repo → vicfei/dsh-dot(旧地址 301,徽章 200);README 双语换名(3 处品牌位,零残留,无改名链)+ 新增「Lineage/渊源」节(置于 Status 前):致谢 Cordis 论文与 dsh 落地、声明独立 Python 路线后裔(零共享代码/非 fork/与 deepseek-ai 无隶属——照 dsh-super-agent 的诚实致谢范本)、说明差异押注(个人智能体场景:记忆密码学遗忘/排程/技能晋升/宪法账本)、名字认账"dsh 星座里的一颗点"。描述行同步。三门绿直推(facade 先例)。
+- 内部链(仅登记册):Naga→GrowBuddy→PersonalAgent→dsh dot(11-01)。代码层仍 naga(改名批已撤销,后续可能再改名)。
