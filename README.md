@@ -1,10 +1,10 @@
-# PersonalAgent
+# dsh dot
 
-[![CI](https://github.com/vicfei/personal-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/vicfei/personal-agent/actions/workflows/ci.yml)
+[![CI](https://github.com/vicfei/dsh-dot/actions/workflows/ci.yml/badge.svg)](https://github.com/vicfei/dsh-dot/actions/workflows/ci.yml)
 
 **A self-evolving AI agent runtime with a reversible, crash-recoverable core.**
 
-PersonalAgent is an AI agent that answers on your chat channels, turns experience
+dsh dot is an AI agent that answers on your chat channels, turns experience
 into reusable skills, and treats *every* change it makes to itself as an
 auditable, revertible ledger entry — so autonomy never costs you control.
 
@@ -12,7 +12,7 @@ auditable, revertible ledger entry — so autonomy never costs you control.
 
 ## Why it is different
 
-Most agent frameworks optimize for the demo. PersonalAgent optimizes for the other
+Most agent frameworks optimize for the demo. dsh dot optimizes for the other
 11 months: what happens when the agent modifies its own state, a plugin
 crashes at 3 a.m., a tool misbehaves, or you simply want yesterday back.
 The architecture is built around that, from the kernel up:
@@ -84,6 +84,28 @@ Key invariants enforced by the kernel (each backed by tests):
 | INV-5 | Constitution unreachable at runtime |
 | INV-6 | Mode ratchet — privileges auto-lower, never auto-raise |
 
+## Lineage: DeepSeek Harness
+
+The architectural DNA of this project — **spatiotemporal composability**
+(reversible effects as the time axis, reactive coeffects as the space axis),
+**everything-is-a-plugin**, every plugin inspectable and replaceable — comes
+from the [Cordis](https://github.com/cordiverse/cordis) programming paradigm
+([_A Programming Paradigm for Spatiotemporal Composability_](https://arxiv.org/abs/2608.25512)),
+as pioneered in production by [**DeepSeek Harness** (`dsh`)](https://github.com/deepseek-ai/deepseek-harness),
+the open-source agent harness by DeepSeek AI.
+
+`dsh dot` is an **independent Python-route descendant** of that philosophy,
+applied to a self-evolving personal agent: no shared code with dsh
+(TypeScript), not a fork, and not affiliated with DeepSeek or the
+`deepseek-ai` organization. Where dsh is a general agent harness, dsh dot
+bets the same composability discipline on one scenario — a personal agent
+that runs for months, remembers with crypto-forgetting, schedules, promotes
+its own skills, and anchors its safety rules in a tamper-evident ledger.
+
+The first-class model adapter is DeepSeek (the project grew up debugging
+reasoning-model discipline against `deepseek` APIs), and the name pays the
+debt: **a dot in the dsh constellation.**
+
 ## Status
 
 | Milestone | Scope | Exit evidence |
@@ -106,8 +128,8 @@ The authoritative design baseline lives in [`docs/design/`](docs/design/)
 Requires Python 3.12+.
 
 ```bash
-git clone https://github.com/vicfei/personal-agent.git
-cd personal-agent
+git clone https://github.com/vicfei/dsh-dot.git
+cd dsh-dot
 python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
 .venv/bin/pytest -q                    # full suite (unit + PBT + fuzz + channels)
