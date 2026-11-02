@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/vicfei/dsh-dot/actions/workflows/ci.yml/badge.svg)](https://github.com/vicfei/dsh-dot/actions/workflows/ci.yml)
 
+<p align="center"><img src="assets/banner.svg" alt="dsh dot — self-evolving personal agent, auditable by construction" width="880"></p>
+
 **A self-evolving AI agent runtime with a reversible, crash-recoverable core.**
 
 dsh dot is an AI agent that answers on your chat channels, turns experience
@@ -84,6 +86,10 @@ Key invariants enforced by the kernel (each backed by tests):
 | INV-5 | Constitution unreachable at runtime |
 | INV-6 | Mode ratchet — privileges auto-lower, never auto-raise |
 
+## The bargain
+
+<p align="center"><img src="assets/bargain.svg" alt="Autonomy is exchanged, never given: every capability buys its matching control" width="880"></p>
+
 ## Lineage: DeepSeek Harness
 
 The architectural DNA of this project — **spatiotemporal composability**
@@ -163,6 +169,15 @@ been verified in production. Note the current posture is *personal /
 small-circle deployment*: a fresh QR binding is granted **owner** trust on
 your instance, and the WebChat console is loopback-only by design — see
 `docs/design/` for the trust model before opening an instance to strangers.
+
+![demo: naga doctor on the production daemon — ledger chain verified, constitution anchor matched](assets/demo-doctor.gif)
+
+*(Every line is real output from the live production daemon — running
+unattended since 2026-10-15.)*
+
+## Architecture
+
+<p align="center"><img src="assets/architecture.svg" alt="Channels → gateway lanes → agent loop with trust-gated tools → hash-chained ledger feeding CAS, projections and the constitution; evolution loops on the side" width="880"></p>
 
 ## Repository layout
 

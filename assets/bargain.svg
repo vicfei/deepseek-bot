@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" font-family="-apple-system,'Segoe UI',system-ui,sans-serif">
+  <rect width="1200" height="430" fill="#0e1428"/>
+  <text x="600" y="52" font-size="26" font-weight="700" fill="#ffffff" text-anchor="middle">Autonomy is exchanged, never given</text>
+  <text x="600" y="78" font-size="15" fill="#8fa3d8" text-anchor="middle">every new capability buys its matching control first</text>
+  <g font-size="16">
+    <text x="235" y="118" fill="#7aa2ff" text-anchor="middle" font-weight="700">AUTONOMY</text>
+    <rect x="80" y="132" rx="10" width="310" height="44" fill="#16204a" stroke="#31427e"/>
+    <text x="235" y="159" fill="#dbe4ff" text-anchor="middle">self-promoting skills</text>
+    <rect x="80" y="186" rx="10" width="310" height="44" fill="#16204a" stroke="#31427e"/>
+    <text x="235" y="213" fill="#dbe4ff" text-anchor="middle">scheduled jobs</text>
+    <rect x="80" y="240" rx="10" width="310" height="44" fill="#16204a" stroke="#31427e"/>
+    <text x="235" y="267" fill="#dbe4ff" text-anchor="middle">two-layer memory</text>
+    <rect x="80" y="294" rx="10" width="310" height="44" fill="#16204a" stroke="#31427e"/>
+    <text x="235" y="321" fill="#dbe4ff" text-anchor="middle">model auto-routing</text>
+
+    <text x="965" y="118" fill="#5fd68a" text-anchor="middle" font-weight="700">CONTROL</text>
+    <rect x="810" y="132" rx="10" width="310" height="44" fill="#12331f" stroke="#2c6b45"/>
+    <text x="965" y="159" fill="#d9ffe6" text-anchor="middle">hash-chained ledger, revertible</text>
+    <rect x="810" y="186" rx="10" width="310" height="44" fill="#12331f" stroke="#2c6b45"/>
+    <text x="965" y="213" fill="#d9ffe6" text-anchor="middle">shadow verification gates</text>
+    <rect x="810" y="240" rx="10" width="310" height="44" fill="#12331f" stroke="#2c6b45"/>
+    <text x="965" y="267" fill="#d9ffe6" text-anchor="middle">trust tiers + crypto-forgetting</text>
+    <rect x="810" y="294" rx="10" width="310" height="44" fill="#12331f" stroke="#2c6b45"/>
+    <text x="965" y="321" fill="#d9ffe6" text-anchor="middle">constitution: drift ⇒ fuse</text>
+
+    <g>
+      <circle cx="600" cy="215" r="46" fill="#1a2350" stroke="#7aa2ff" stroke-width="2"/>
+      <text x="600" y="223" font-size="26" fill="#ffffff" text-anchor="middle" font-weight="800">⇄</text>
+    </g>
+    <path d="M400 154 C 480 154, 520 200, 548 210" stroke="#7aa2ff" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M800 154 C 720 154, 680 200, 652 210" stroke="#5fd68a" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M400 208 C 470 208, 520 212, 552 214" stroke="#7aa2ff" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M800 208 C 730 208, 680 212, 648 214" stroke="#5fd68a" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M400 262 C 470 262, 520 222, 552 218" stroke="#7aa2ff" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M800 262 C 730 262, 680 222, 648 218" stroke="#5fd68a" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M400 316 C 480 316, 520 230, 550 222" stroke="#7aa2ff" stroke-width="2" fill="none" opacity="0.7"/>
+    <path d="M800 316 C 720 316, 680 230, 650 222" stroke="#5fd68a" stroke-width="2" fill="none" opacity="0.7"/>
+  </g>
+  <text x="600" y="392" font-size="14" fill="#66759f" text-anchor="middle">an agent you can leave running for months — because month 11 is what it was built for</text>
+</svg>

@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/vicfei/dsh-dot/actions/workflows/ci.yml/badge.svg)](https://github.com/vicfei/dsh-dot/actions/workflows/ci.yml)
 
+<p align="center"><img src="assets/banner.svg" alt="dsh dot——自进化个人智能体,天然可审计" width="880"></p>
+
 **可安全自我修改、经验可复利的自进化智能体运行时。**
 
 dsh dot 是你的私人 AI 智能体:在你的聊天渠道上应答,把经验沉淀为可复用的技能,
@@ -70,6 +72,10 @@ dsh dot 是你的私人 AI 智能体:在你的聊天渠道上应答,把经验沉
 | INV-4 | 单写入者——共享状态只经串行账本变更 |
 | INV-5 | 宪法运行时不可触达 |
 | INV-6 | 模式棘轮——权限只自动降不自动升 |
+
+## 交易
+
+<p align="center"><img src="assets/bargain.svg" alt="自主性是交换来的,不是白给的:每项新能力先买好对等的控制" width="880"></p>
 
 ## 渊源:DeepSeek Harness
 
@@ -144,6 +150,14 @@ bot 身份**,会话、记忆、信任按用户隔离;生产上已验证两位用
 注意当前定位是*个人/小圈子部署*:新扫码绑定在你的实例上会被授予
 **owner** 信任,WebChat 控制台按设计仅回环可达——向陌生人开放实例前,
 请先读 `docs/design/` 的信任模型。
+
+![演示:生产 daemon 上的 naga doctor——账本链校验通过、宪法锚点匹配](assets/demo-doctor.gif)
+
+*(每一行都是生产 daemon 的真实输出——自 2026-10-15 起无人值守连续运行。)*
+
+## 架构
+
+<p align="center"><img src="assets/architecture.svg" alt="渠道→网关车道→带信任门控工具的智能体回路→哈希链账本(喂给 CAS/投影/宪法);旁路为进化循环" width="880"></p>
 
 ## 仓库布局
 
