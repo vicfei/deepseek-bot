@@ -484,3 +484,8 @@
 - 用户定名 **dsh dot** 并要求主页阐述与 DeepSeek Harness 的渊源。取证实录:节点上确有 deepseek-harness 官方仓(DeepSeek AI 开源,Cordis 时空可组合/一切皆插件范式)及 dsh 家族(dsh-desktop/dsh-super-agent/dsh-promo)——**渊源为真**:本项目设计期借的正是 Cordis/dsh 那套理念(用户早有明言),旗舰适配器亦为 deepseek。
 - 执行:repo → vicfei/dsh-dot(旧地址 301,徽章 200);README 双语换名(3 处品牌位,零残留,无改名链)+ 新增「Lineage/渊源」节(置于 Status 前):致谢 Cordis 论文与 dsh 落地、声明独立 Python 路线后裔(零共享代码/非 fork/与 deepseek-ai 无隶属——照 dsh-super-agent 的诚实致谢范本)、说明差异押注(个人智能体场景:记忆密码学遗忘/排程/技能晋升/宪法账本)、名字认账"dsh 星座里的一颗点"。描述行同步。三门绿直推(facade 先例)。
 - 内部链(仅登记册):Naga→GrowBuddy→PersonalAgent→dsh dot(11-01)。代码层仍 naga(改名批已撤销,后续可能再改名)。
+
+## 2026-11-02 视觉识别系统(借鉴 dsh-super-agent 图片打法)
+
+- 用户反馈 dsh-super-agent 主页图片(banner/三规则图/真实 demo GIF/架构 SVG)带来 3 star/日 → 解码其配方"每张图有职责:身份→论点→证据→机制",为 dsh dot 照方自制四件(全自产,零外部素材):assets/banner.svg(星点星座 nod)、bargain.svg("自主性是交换来的"论点图)、architecture.svg(渠道→车道→回路→账本/CAS/投影/宪法,K.3 标注 planned)、demo-doctor.gif(**生产 daemon 真实 naga doctor 输出**逐帧打字渲染:1111 条账本链校验通过+宪法锚点匹配,PIL 自渲 43KB/8 帧)。双语 README 四点嵌入(Try-it 配"每一行都是真实输出"照抄其诚实标注法)。三门绿直推;raw 链接 200 验证。
+- 遗留:social preview 图(GitHub 设置面板需手动上传或 GraphQL,建议用户传 assets/banner.svg 导出的 PNG)。
