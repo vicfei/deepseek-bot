@@ -24,19 +24,19 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
-from naga import kernel
-from naga.agent import AgentLoop
-from naga.branch import SessionBranch
-from naga.ledger_store import DurableLedger
-from naga.llm import ModelAdapter, price_micro_cents
-from naga.skills import SkillStore
+from deepseek_bot import kernel
+from deepseek_bot.agent import AgentLoop
+from deepseek_bot.branch import SessionBranch
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ModelAdapter, price_micro_cents
+from deepseek_bot.skills import SkillStore
 
 SHADOW_DOWNGRADE_WINS = 3   # 候选 spec-constants shadow_downgrade_wins(E.4 累计 N 次)
 SHADOW_EXPLORE_BUDGET = 30_000  # 候选 shadow_explore_budget(单次影子回放预算)
 SHADOW_EXPLORE_MAX_PENDING = 2  # 同簇并发影子回放上-limit(防探索风暴)
 
 
-from naga.agent import cluster_of
+from deepseek_bot.agent import cluster_of
 
 
 @dataclass(frozen=True)
@@ -230,7 +230,7 @@ def routing_dashboard(ledger: DurableLedger, registry: ModelRegistry) -> dict[st
         entry["tokens"] += ptoks + ctoks
         entry["actual_micro_cents"] += actual
     return {
-        "price_table_version": __import__("naga.llm", fromlist=["x"]).PRICE_TABLE_VERSION,
+        "price_table_version": __import__("deepseek_bot.llm", fromlist=["x"]).PRICE_TABLE_VERSION,
         "net_savings_micro_cents": round(savings - exploration, 3),
         "gross_savings_micro_cents": round(savings, 3),
         "exploration_spend_micro_cents": round(exploration, 3),

@@ -26,8 +26,8 @@ import asyncio
 import datetime
 from typing import Any
 
-from naga.ledger_store import DurableLedger
-from naga.memory import MemoryStore, parse_distilled
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.memory import MemoryStore, parse_distilled
 
 SESSION_IDLE_MINUTES = 60    # 候选 spec-constants session_idle_minutes
 SESSION_IDLE_POLL_SEC = 60   # 候选 session_idle_poll_seconds

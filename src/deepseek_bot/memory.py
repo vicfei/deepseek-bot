@@ -41,7 +41,7 @@ from typing import Any, cast
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives.keywrap import aes_key_unwrap, aes_key_wrap
 
-from naga.ledger_store import DurableLedger
+from deepseek_bot.ledger_store import DurableLedger
 
 MEMORY_MAX_BYTES = 16384      # 候选 spec-constants memory_max_bytes
 MEMORY_INJECT_MAX_CHARS = 2000  # 候选 memory_inject_max_chars(注入上下文预算)

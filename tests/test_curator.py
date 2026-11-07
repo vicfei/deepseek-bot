@@ -4,17 +4,17 @@ recovery, ReplayBundle goal sourcing, and the auto-promotion trigger."""
 import asyncio
 import datetime
 
-from naga import kernel, storage  # noqa: F401
-from naga.curator import Curator, scan_skill_events
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.promotion import (
+from deepseek_bot import kernel, storage  # noqa: F401
+from deepseek_bot.curator import Curator, scan_skill_events
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.promotion import (
     PromotionPipeline,
     ShadowVerifier,
     auto_trigger_candidates,
     goals_from_bundles,
 )
-from naga.skills import SkillStore
+from deepseek_bot.skills import SkillStore
 
 GOOD_SKILL = """---
 name: sk
@@ -122,7 +122,7 @@ def test_scan_skill_events_counts(tmp_path):
 
 def test_goals_from_bundles(tmp_path):
     _home_dir, led = _home(tmp_path)
-    from naga.trace import TraceRecorder
+    from deepseek_bot.trace import TraceRecorder
 
     for goal in ("任务甲:调研 X", "任务乙:总结 Y"):
         rec = TraceRecorder(led, trace_id="tr_" + goal[-1],
@@ -193,7 +193,7 @@ def test_full_auto_promotion_flow(tmp_path):
     for _ in range(3):
         led.append("skill.use", "root", {"cas_id": cas})
 
-    from naga.trace import TraceRecorder
+    from deepseek_bot.trace import TraceRecorder
     rec = TraceRecorder(led, trace_id="tr_seed", session_key="s1",
                         inbound={"text": "候选标记相关的任务"})
     rec.finish(outcome="success", cost_tokens=5)

@@ -20,12 +20,12 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
-from naga import kernel
-from naga.agent import AgentLoop
-from naga.branch import SessionBranch
-from naga.ledger_store import DurableLedger
-from naga.llm import ModelAdapter
-from naga.skills import SKILL_MAX_BYTES, SkillStore
+from deepseek_bot import kernel
+from deepseek_bot.agent import AgentLoop
+from deepseek_bot.branch import SessionBranch
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ModelAdapter
+from deepseek_bot.skills import SKILL_MAX_BYTES, SkillStore
 
 # 体检:危险指令模式(§6.4 示例形态;对抗样本在测试逐条钉死)
 DANGEROUS_PATTERNS: tuple[str, ...] = (
@@ -173,7 +173,7 @@ class ShadowVerifier:
         try:
             return await loop.run(goal)
         except Exception:  # noqa: BLE001 —— 影子回放:任务级异常计为该次失败
-            from naga.agent import AgentResult
+            from deepseek_bot.agent import AgentResult
             return AgentResult(reply=None, outcome="aborted",
                                trace_id="tr_sh_failed", steps=0, tokens=0,
                                cost_cents=0, failure_analysis="影子回放异常")
@@ -243,7 +243,7 @@ def goals_from_bundles(ledger: DurableLedger, *, limit: int = 3,
                        session_key: str | None = None) -> list[str]:
     """从最近的 trace.record ReplayBundle 提取回放目标(§7.4"回放真实历史
     轨迹"的字面化):bundle.session.inbound.text 即当年任务目标(已脱敏)。"""
-    from naga.curator import iter_trace_records
+    from deepseek_bot.curator import iter_trace_records
 
     goals: list[str] = []
     for payload in reversed(iter_trace_records(ledger)):  # 最近优先
@@ -268,7 +268,7 @@ def auto_trigger_candidates(ledger: DurableLedger, session_key: str,
                             trigger_uses: int = 3) -> list[tuple[str, int]]:
     """晋升自动触发条件:该会话局部分支上,uses 达阈值且未入 main/pending
     的技能(返回 (name, uses);候选 spec-constants skill_promotion_trigger_uses)。"""
-    from naga.curator import scan_skill_events
+    from deepseek_bot.curator import scan_skill_events
 
     events = scan_skill_events(ledger)
     local_branch = f"local:{session_key}"

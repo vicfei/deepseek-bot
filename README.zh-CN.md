@@ -126,13 +126,19 @@ python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 .venv/bin/pyright src                  # strict 类型检查
 ```
 
-运行 daemon(回环网关 + 微信渠道)另需凭据文件
-`~/.naga/credentials/providers.json`(0600)——期望的供应商条目见
-`src/naga/llm.py`。
+或直接从 git 安装(项目已按 pip 打包):
 
 ```bash
-naga daemon start      # http://127.0.0.1:18789 —— WebChat 控制台
-naga doctor            # 自检
+pip install git+https://github.com/vicfei/deepseek-bot.git
+```
+
+运行 daemon(回环网关 + 微信渠道)另需凭据文件
+`~/.deepseek-bot/credentials/providers.json`(0600)——期望的供应商条目见
+`src/deepseek_bot/llm.py`。(存量 `~/.naga` 目录自动沿用,无需迁移。)
+
+```bash
+deepseek-bot daemon start      # http://127.0.0.1:18789 —— WebChat 控制台
+deepseek-bot doctor            # 自检
 ```
 
 ## 试用
@@ -151,7 +157,7 @@ bot 身份**,会话、记忆、信任按用户隔离;生产上已验证两位用
 **owner** 信任,WebChat 控制台按设计仅回环可达——向陌生人开放实例前,
 请先读 `docs/design/` 的信任模型。
 
-![演示:生产 daemon 上的 naga doctor——账本链校验通过、宪法锚点匹配](assets/demo-doctor.gif)
+![演示:生产 daemon 上的 deepseek-bot doctor——账本链校验通过、宪法锚点匹配](assets/demo-doctor.gif)
 
 *(每一行都是生产 daemon 的真实输出——自 2026-10-15 起无人值守连续运行。)*
 
@@ -162,7 +168,7 @@ bot 身份**,会话、记忆、信任按用户隔离;生产上已验证两位用
 ## 仓库布局
 
 ```
-src/naga/
+src/deepseek_bot/
   kernel.py        # L0 种子内核(冻结基线孪生;原位演进走 RFC)
   ledger_store.py  # 持久账本:追加日志、Merkle 封存、快照、CAS、SQLite 投影
   gateway.py       # WS 网关:车道队列、信任策略、事件可见性矩阵

@@ -18,19 +18,19 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from naga import kernel
-from naga.branch import SessionBranch
-from naga.ledger_store import DurableLedger
-from naga.llm import ModelAdapter, ToolSpec, price_cents
-from naga.memory import (
+from deepseek_bot import kernel
+from deepseek_bot.branch import SessionBranch
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ModelAdapter, ToolSpec, price_cents
+from deepseek_bot.memory import (
     MEMORY_DISTILL_MIN_TOOL_CALLS,
     MemoryStore,
     new_memory_id,
     parse_distilled,
     render_memory_section,
 )
-from naga.skills import SKILL_MAX_BYTES, SkillStore
-from naga.trace import TraceRecorder
+from deepseek_bot.skills import SKILL_MAX_BYTES, SkillStore
+from deepseek_bot.trace import TraceRecorder
 
 SKILL_DISTILL_MIN_TOOL_CALLS = 5  # spec-constants skill_distill_min_tool_calls / H.4
 
@@ -142,7 +142,7 @@ class AgentLoop:
                        forced: list[tuple[str, str]] | None = None,
                        memory_block: str = "") -> str:
         lines = [
-            ("你是 Naga(Samsara Python 路线)的任务执行智能体。"
+            ("你是 DeepSeek Bot 的任务执行智能体。"
              "能直接回答时直接回答;需要外部事实或资料时调用工具。"),
             ("运行时能力(不要否认自己拥有它们,细节用 system_status 查):"
              "定时任务调度器(job_create 可直接建)、两层记忆、技能库、"

@@ -6,8 +6,8 @@ import subprocess
 import sys
 import time
 
-from naga import storage
-from naga.ledger_store import DurableLedger
+from deepseek_bot import storage
+from deepseek_bot.ledger_store import DurableLedger
 
 _SRC = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 
@@ -16,7 +16,7 @@ def _cli(home: str, *argv: str) -> subprocess.CompletedProcess[str]:
     env = dict(os.environ)
     env["PYTHONPATH"] = _SRC + os.pathsep + env.get("PYTHONPATH", "")
     return subprocess.run(
-        [sys.executable, "-m", "naga.cli", "--home", home, *argv],
+        [sys.executable, "-m", "deepseek_bot.cli", "--home", home, *argv],
         env=env, capture_output=True, text=True, timeout=60, check=False)
 
 
@@ -27,11 +27,12 @@ def test_daemon_lifecycle_and_idempotency(tmp_path):
     with open(os.path.join(home, "credentials", "providers.json"), "w") as fh:
         json.dump({"deepseek": {"base_url": "http://127.0.0.1:9", "api_key": "sk-dummy",
                                 "chat_model": "dummy"}}, fh)
-    os.environ["NAGA_WS_PORT"] = "0"  # 临时端口:测试不与真实 daemon(18789)冲突
+    os.environ["DEEPSEEK_BOT_WS_PORT"] = "0"  # 临时端口:测试不与真实 daemon(18789)冲突
     try:
         r = _cli(home, "--json", "daemon", "start")
         assert r.returncode == 0, r.stderr
     finally:
+        os.environ.pop("DEEPSEEK_BOT_WS_PORT", None)
         os.environ.pop("NAGA_WS_PORT", None)
     assert json.loads(r.stdout)["daemon"] == "started"
 

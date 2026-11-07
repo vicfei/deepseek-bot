@@ -13,7 +13,7 @@ from typing import Any
 import yaml
 from pydantic import BaseModel, ConfigDict
 
-from naga.ledger_store import DurableLedger
+from deepseek_bot.ledger_store import DurableLedger
 
 SKILL_MAX_BYTES = 15360  # spec-constants skill_max_bytes / 数据模型 §4 B.1 CHECK
 

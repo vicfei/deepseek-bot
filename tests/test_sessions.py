@@ -12,11 +12,11 @@ import json
 from types import SimpleNamespace
 from typing import Any
 
-from naga.gateway import Gateway
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.memory import MemoryStore
-from naga.sessions import (
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.memory import MemoryStore
+from deepseek_bot.sessions import (
     SessionRegistry,
     creator_session_of,
     job_notify_text,
@@ -279,7 +279,7 @@ def test_helpers():
 # ── CLI(只读直查) ──────────────────────────────────────────────
 
 def test_cli_session_list(tmp_path, capsys):
-    from naga.cli import main
+    from deepseek_bot.cli import main
 
     led = _led(tmp_path, "cli")
     _open(led, key="wechat:dm:u1")

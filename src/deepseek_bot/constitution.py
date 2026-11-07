@@ -26,7 +26,7 @@ import importlib
 from dataclasses import dataclass
 from typing import Any, cast
 
-from naga.ledger_store import DurableLedger
+from deepseek_bot.ledger_store import DurableLedger
 
 CONSTITUTION_SCHEMA = "naga-constitution/0"
 
@@ -45,7 +45,7 @@ def _kernel_twin_sha() -> str:
     """内核孪生(docs/design 基线的运行副本)的内容哈希——冻结锚。"""
     import os
 
-    import naga.kernel as k
+    import deepseek_bot.kernel as k
     with open(os.path.abspath(k.__file__), "rb") as fh:
         return hashlib.sha256(fh.read()).hexdigest()
 
@@ -57,23 +57,23 @@ def rules(kernel_sha: str | None = None) -> list[Rule]:
     sha = kernel_sha or _kernel_twin_sha()
     return [
         Rule("C1", "kernel-gate", "内核安全闸:种子内核为冻结孪生,哈希钉死",
-             "naga.constitution", "_KERNEL_SHA", sha),
+             "deepseek_bot.constitution", "_KERNEL_SHA", sha),
         Rule("C2a", "auth-matrix", "guest 单任务预算封顶 50,000(§10.1)",
-             "naga.gateway", "GUEST_TASK_TOKEN_BUDGET", 50_000),
+             "deepseek_bot.gateway", "GUEST_TASK_TOKEN_BUDGET", 50_000),
         Rule("C2b", "auth-matrix", "known 单任务预算封顶 500,000(§10.1)",
-             "naga.gateway", "KNOWN_TASK_TOKEN_BUDGET", 500_000),
+             "deepseek_bot.gateway", "KNOWN_TASK_TOKEN_BUDGET", 500_000),
         Rule("C2c", "auth-matrix", "R 级档位:guest=R0 / known=R1 / owner=R4(无封顶)",
-             "naga.gateway", "TRUST_R_CEILING", {"owner": 4, "known": 1, "guest": 0}),
+             "deepseek_bot.gateway", "TRUST_R_CEILING", {"owner": 4, "known": 1, "guest": 0}),
         Rule("C2d", "auth-matrix", "untrusted 预算归零(仅握手与只读事件流)",
-             "naga.gateway", "task_budget.__defaults__", None),  # 声明式:由 C2a-d 联合表达
+             "deepseek_bot.gateway", "task_budget.__defaults__", None),  # 声明式:由 C2a-d 联合表达
         Rule("C3a", "trust-default", "渠道默认信任:wechat=guest / webchat=owner",
-             "naga.trust", "DEFAULT_TRUST", {"wechat": "guest", "webchat": "owner"}),
+             "deepseek_bot.trust", "DEFAULT_TRUST", {"wechat": "guest", "webchat": "owner"}),
         Rule("C3b", "trust-default", "未知渠道一律 untrusted(宁严勿宽)",
-             "naga.trust", "UNKNOWN_CHANNEL_TRUST", "untrusted"),
+             "deepseek_bot.trust", "UNKNOWN_CHANNEL_TRUST", "untrusted"),
         Rule("C4", "rollback", "回滚协议:一切自我修改可逆,内核 Budget 树强制严格递减",
-             "naga.kernel", "Budget", "class"),  # 声明式:C1 的孪生哈希覆盖其实现
+             "deepseek_bot.kernel", "Budget", "class"),  # 声明式:C1 的孪生哈希覆盖其实现
         Rule("C5", "self", "本层自身:规则清单哈希随账本锚定,校验器在闸外",
-             "naga.constitution", "CONSTITUTION_SCHEMA", CONSTITUTION_SCHEMA),
+             "deepseek_bot.constitution", "CONSTITUTION_SCHEMA", CONSTITUTION_SCHEMA),
     ]
 
 

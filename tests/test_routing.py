@@ -4,12 +4,12 @@ router (explore down only), shadow downgrade, savings dashboard, gateway wiring.
 import asyncio
 from typing import Any
 
-from naga import storage
-from naga.agent import cluster_of
-from naga.gateway import Gateway
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.routing import (
+from deepseek_bot import storage
+from deepseek_bot.agent import cluster_of
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.routing import (
     SHADOW_DOWNGRADE_WINS,
     ModelRegistry,
     ModelRouter,
@@ -55,7 +55,7 @@ def test_cluster_deterministic_and_bounded():
 
 
 def test_price_table_math():
-    from naga.llm import PRICE_TABLE_VERSION, price_cents, price_micro_cents
+    from deepseek_bot.llm import PRICE_TABLE_VERSION, price_cents, price_micro_cents
     assert PRICE_TABLE_VERSION
     assert price_cents("qwen-flash", 500_000, 500_000) == 6
     assert price_micro_cents("qwen-flash", 1000, 500) > 0
@@ -147,7 +147,7 @@ def test_dashboard_savings_math(tmp_path):
     dash = routing_dashboard(led, router.registry)
     assert dash["tasks"] == 2
     # 毛节省 = 旗舰价跑 t2 的差额;净节省再减影子探索支出
-    from naga.llm import price_micro_cents
+    from deepseek_bot.llm import price_micro_cents
     gross = (price_micro_cents(FLAG, 50_000, 50_000)
              - price_micro_cents(BUDGET, 50_000, 50_000))
     explore = price_micro_cents(BUDGET, 10_000, 10_000)
@@ -182,7 +182,7 @@ def test_gateway_routes_and_explores(tmp_path):
     kinds = {(m, k) for m, k in rows}
     assert (FLAG, "task") in kinds and (BUDGET, "shadow") in kinds
 
-    from naga.curator import iter_trace_records
+    from deepseek_bot.curator import iter_trace_records
     records = iter_trace_records(led)
     assert any(r.get("task_cluster") == cluster_of(goal) for r in records)
     led.close()

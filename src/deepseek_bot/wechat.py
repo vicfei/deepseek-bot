@@ -27,8 +27,9 @@ import httpx
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from pydantic import BaseModel
 
-from naga.ledger_store import CAS
-from naga.trust import derive_trust
+from deepseek_bot import storage
+from deepseek_bot.ledger_store import CAS
+from deepseek_bot.trust import derive_trust
 
 ILINK_BASE = "https://ilinkai.weixin.qq.com"
 ERR14_PAUSE_THRESHOLD = 5      # wechat_err14_pause_threshold 候选(随 #23 批 RFC 入注册表)
@@ -152,12 +153,12 @@ class ILinkClient:
         return BindingStatus(status=st if st in ("scaned", "expired") else "wait")
 
     async def get_updates(self, get_updates_buf: str | None) -> UpdateResponse:
-        # Weknora 契约:body = {get_updates_buf, base_info}(不是 {timeout});响应游标同名
+        # 公开协议规格(wechatbot.dev):body={get_updates_buf, base_info},channel_version=2.0.0;响应游标同名
         try:
             status, data = await self._request(
                 f"{self._baseurl}/ilink/bot/getupdates", "POST", self._headers(),
                 {"get_updates_buf": get_updates_buf or "",
-                 "base_info": {"channel_version": "naga-1.0.0"}}, 38.0)
+                 "base_info": {"channel_version": "2.0.0"}}, 38.0)
         except (TimeoutError, httpx.HTTPError, OSError) as err:
             return UpdateResponse(errcode=-1, errmsg=f"网络超时({type(err).__name__})")
         d = _as_dict(data)
@@ -186,7 +187,7 @@ class ILinkClient:
             msg["context_token"] = context_token
         status, data = await self._request(
             f"{self._baseurl}/ilink/bot/sendmessage", "POST", self._headers(),
-            {"msg": msg, "base_info": {"channel_version": "naga-1.0.0"}}, 15.0)
+            {"msg": msg, "base_info": {"channel_version": "2.0.0"}}, 15.0)
         d = _as_dict(data)
         return SendResult(errcode=-1 if status != 200 else _errcode(d),
                           errmsg=d.get("errmsg"))
@@ -195,7 +196,7 @@ class ILinkClient:
                          context_token: str | None = None) -> tuple[SendResult, str | None]:
         # body 必须带 ilink_user_id,否则 ret=-2(无文档记载的实测坑)
         body: dict[str, Any] = {"ilink_user_id": ilink_user_id,
-                                "base_info": {"channel_version": "naga-1.0.0"}}
+                                "base_info": {"channel_version": "2.0.0"}}
         if context_token:
             body["context_token"] = context_token
         status, data = await self._request(
@@ -213,7 +214,7 @@ class ILinkClient:
             f"{self._baseurl}/ilink/bot/sendtyping", "POST", self._headers(),
             {"ilink_user_id": ilink_user_id, "typing_ticket": typing_ticket,
              "status": status_value,
-             "base_info": {"channel_version": "naga-1.0.0"}}, 15.0)
+             "base_info": {"channel_version": "2.0.0"}}, 15.0)
         d = _as_dict(send[1])
         return SendResult(errcode=-1 if send[0] != 200 else _errcode(d), errmsg=d.get("errmsg"))
 
@@ -617,7 +618,7 @@ class WeChatChannel:
             self._log(f"msg {from_user[:12]}… -> drop(无可提取内容)")
             return
         self._log(f"msg {from_user[:12]}… -> {'text' if goal is not None else 'media'}")
-        if os.environ.get("NAGA_WECHAT_DEBUG", "") == "1":  # 逆向契约观测缝(截 4096)
+        if storage.env_opt("WECHAT_DEBUG") == "1":  # 逆向契约观测缝(截 4096)
             self._log("raw: " + json.dumps(update, ensure_ascii=False)[:4096])
         token = update.get("context_token")
         if isinstance(token, str) and token:

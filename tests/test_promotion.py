@@ -5,12 +5,12 @@ promotion pipeline end-to-end (auto-merge vs human-review queue)."""
 import asyncio
 import json
 
-from naga import storage
-from naga.agent import AgentResult
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.promotion import PromotionPipeline, ShadowVerifier, health_check, skill_r_level
-from naga.skills import SkillStore
+from deepseek_bot import storage
+from deepseek_bot.agent import AgentResult
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.promotion import PromotionPipeline, ShadowVerifier, health_check, skill_r_level
+from deepseek_bot.skills import SkillStore
 
 GOOD_SKILL = """---
 name: web-research-flow
@@ -139,7 +139,7 @@ def test_shadow_cost_tolerance(tmp_path):
 
 def test_shadow_runs_leave_no_materialized_writes(tmp_path):
     """影子运行卫生:沉降/写入永不物化——影子分支挂永不结算的父分支。"""
-    from naga.agent import SKILL_DISTILL_MIN_TOOL_CALLS
+    from deepseek_bot.agent import SKILL_DISTILL_MIN_TOOL_CALLS
 
     script = {"n": 0}
 

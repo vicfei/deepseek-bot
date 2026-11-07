@@ -17,7 +17,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict
 
-from naga import storage
+from deepseek_bot import storage
 
 TRUST_LEVELS = ("owner", "known", "guest", "untrusted")
 

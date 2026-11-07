@@ -7,12 +7,12 @@ import json
 
 import pytest
 
-from naga import storage
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.skills import SkillStore
-from naga.trace import TraceRecorder
-from naga.workflow import (
+from deepseek_bot import storage
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.skills import SkillStore
+from deepseek_bot.trace import TraceRecorder
+from deepseek_bot.workflow import (
     WorkflowCompiler,
     WorkflowExecutor,
     WorkflowNode,

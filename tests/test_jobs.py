@@ -20,8 +20,8 @@ from typing import Any
 
 import pytest
 
-from naga.gateway import Gateway
-from naga.jobs import (
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.jobs import (
     JobScheduler,
     JobSpec,
     JobStore,
@@ -29,9 +29,9 @@ from naga.jobs import (
     fires_per_month,
     scan_job_events,
 )
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.trust import grant_trust, revoke_trust
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.trust import grant_trust, revoke_trust
 
 TZ = zoneinfo.ZoneInfo("Asia/Shanghai")
 
@@ -47,7 +47,7 @@ def clocked(monkeypatch: pytest.MonkeyPatch) -> tuple[Callable[[], datetime.date
     def advance(delta: datetime.timedelta) -> None:
         state["t"] = state["t"] + delta
 
-    import naga.ledger_store as ls
+    import deepseek_bot.ledger_store as ls
     monkeypatch.setattr(ls.time, "time", lambda: state["t"].timestamp())
     return now, advance
 
@@ -156,7 +156,7 @@ def test_compile_natural_language_ok():
     '{"cron": "0 9 * * *", "goal": ""}',
 ])
 def test_compile_rejects_bad_output(body):
-    from naga.jobs import JobError
+    from deepseek_bot.jobs import JobError
     with pytest.raises(JobError):
         asyncio.run(compile_natural_language(FakeAdapter(body), "需求"))
 
@@ -494,7 +494,7 @@ def test_run_agent_r_ceiling_filters_tools(tmp_path):
 
 def test_cli_job_id_resolves_from_text_slot(monkeypatch):
     """#85:单独的 id 被 argparse 贪心分进 text 槽,非 add 动作须两槽择一取。"""
-    from naga import cli
+    from deepseek_bot import cli
 
     captured: list[tuple[str, dict[str, Any]]] = []
 

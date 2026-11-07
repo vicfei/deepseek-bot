@@ -14,7 +14,7 @@ import re
 import time
 from typing import Any
 
-from naga.ledger_store import DurableLedger
+from deepseek_bot.ledger_store import DurableLedger
 
 # 递归 JSON 值类型(redact 的输入输出;Any 会把 Unknown 传染进 strict)
 type JsonLike = str | int | float | bool | None | list[JsonLike] | dict[str, JsonLike]

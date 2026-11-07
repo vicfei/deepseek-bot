@@ -3,16 +3,16 @@
 import asyncio
 from typing import Any
 
-from naga import storage
-from naga.ledger_store import CAS
-from naga.llm import (
+from deepseek_bot import storage
+from deepseek_bot.ledger_store import CAS
+from deepseek_bot.llm import (
     VISION_DESCRIBE_MAX_CHARS,
     VISION_DESCRIBE_PROMPT,
     DashScopeVisionDescriber,
     ProviderConfig,
     sniff_image_mime,
 )
-from naga.wechat import ILinkClient, WeChatChannel, extract_media
+from deepseek_bot.wechat import ILinkClient, WeChatChannel, extract_media
 
 KEY_HEX = "0f1e2d3c4b5a69788796a5b4c3d2e1f0"
 KEY_RAW = bytes.fromhex(KEY_HEX)
@@ -251,6 +251,7 @@ def test_sniff_image_mime_table():
 # ---- 观测缝:ingest 决策日志(capsys 捕获;生产落 state/daemon.log) ----
 
 def test_ingest_logs_decision_line(tmp_path, capsys, monkeypatch):
+    monkeypatch.delenv("DEEPSEEK_BOT_WECHAT_DEBUG", raising=False)
     monkeypatch.delenv("NAGA_WECHAT_DEBUG", raising=False)
 
     async def scenario():
@@ -266,7 +267,7 @@ def test_ingest_logs_decision_line(tmp_path, capsys, monkeypatch):
 
 
 def test_debug_env_dumps_raw_update(tmp_path, capsys, monkeypatch):
-    monkeypatch.setenv("NAGA_WECHAT_DEBUG", "1")
+    monkeypatch.setenv("DEEPSEEK_BOT_WECHAT_DEBUG", "1")
 
     async def scenario():
         mc = _Chan(tmp_path)

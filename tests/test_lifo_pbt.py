@@ -14,7 +14,7 @@ from collections import Counter
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from naga import kernel
+from deepseek_bot import kernel
 
 ops_strategy = st.lists(
     st.tuples(st.sampled_from(["effect", "perform", "bracket"]), st.booleans()),

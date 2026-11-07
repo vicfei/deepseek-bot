@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "naga"
-version = "0.1.0"
-description = "Self-evolving AI agent runtime: RSI under tiered authority, reversible ledger, capability security, crash-contained plugins"
+name = "deepseek-bot"
+version = "0.2.0"
+description = "DeepSeek Bot: self-evolving AI agent runtime — RSI under tiered authority, reversible ledger, capability security, crash-contained plugins"
 requires-python = ">=3.12"  # type 语句(递归类型别名)依赖 3.12;本机与 CI 均为 3.12
 dependencies = [
   "zstandard>=0.23",  # 快照 tar.zst(数据模型 §3.2);>=0.23 含类型标注
@@ -28,10 +28,14 @@ dev = [
 ]
 
 [project.scripts]
-naga = "naga.cli:main"
+deepseek-bot = "deepseek_bot.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+# WebChat 页面是包内数据资源:缺此配置 wheel 会丢掉它(pip 装完网关 404)
+[tool.setuptools.package-data]
+deepseek_bot = ["webchat/*.html"]
 
 [tool.ruff]
 line-length = 100
@@ -39,7 +43,7 @@ src = ["src", "tests"]
 # 冻结种子文件,原样平移(docs/design 基线的孪生副本,运行正确性由 pytest T 套件与
 # 冻结检查器 R14 把关);lint 只管 src/ 下的演进代码。2026 版 ruff 默认规则集
 # 含 I/UP/SIM/BLE/ASYNC,对逐字副本属于噪音,故整体排除而非逐条豁免。
-extend-exclude = ["src/naga/kernel.py"]
+extend-exclude = ["src/deepseek_bot/kernel.py"]
 
 [tool.pyright]
 include = ["src"]

@@ -6,11 +6,11 @@ import json
 import os
 from typing import ClassVar
 
-from naga import kernel
-from naga.agent import AgentLoop
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.skills import SkillStore
+from deepseek_bot import kernel
+from deepseek_bot.agent import AgentLoop
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.skills import SkillStore
 
 _DISTILL = ("id: multi-topic-research\n## 何时使用\n多主题 调研 竞品 对比\n"
             "## 步骤\n1. 逐主题搜索\n2. 汇总对比\n## 已知陷阱\n- 主题混搜易漏")

@@ -20,9 +20,9 @@ import json
 from dataclasses import dataclass, field
 from typing import Any, cast
 
-from naga.ledger_store import DurableLedger
-from naga.memory import MemoryStore
-from naga.skills import SkillStore
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.memory import MemoryStore
+from deepseek_bot.skills import SkillStore
 
 CURATOR_STALE_DAYS = 30        # 主文档 §6.3 状态机(30 天未用 → stale)
 CURATOR_ARCHIVE_DAYS = 90      # 90 天 → archived

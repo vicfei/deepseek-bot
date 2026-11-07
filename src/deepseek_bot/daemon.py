@@ -14,12 +14,12 @@ import sys
 import uuid
 from typing import Any, cast
 
-from naga import storage
-from naga.gateway import WS_PORT, Gateway
+from deepseek_bot import storage
+from deepseek_bot.gateway import WS_PORT, Gateway
 
 OWNER_TASK_BASE_BUDGET = 200_000  # owner 自设基线(§10.1);信任级封顶由 gateway 单点执行
-from naga.ledger_store import DurableLedger
-from naga.llm import CredentialStore, DeepSeekAdapter
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import CredentialStore, DeepSeekAdapter
 
 
 def reply_for(result: Any) -> str:
@@ -43,7 +43,7 @@ def wechat_media_options(creds: CredentialStore) -> dict[str, Any]:
     """渠道媒体能力装配:有 dashscope 凭据则开图片内容识别,否则仅存档。"""
     if not creds.has("dashscope"):
         return {}
-    from naga.llm import DashScopeVisionDescriber
+    from deepseek_bot.llm import DashScopeVisionDescriber
 
     describer = DashScopeVisionDescriber.from_credentials(creds)
     return {"vision_describe": describer.describe}
@@ -61,7 +61,7 @@ async def amain(home: str) -> int:
     led = DurableLedger.open(home)
 
     # ── M5-1 宪法层:首启锚定,此后每次启动完整校验(违宪硬熔断,不带病运行)──
-    from naga import constitution, soak
+    from deepseek_bot import constitution, soak
 
     if constitution.anchored_sha(led) is None:
         sha = constitution.anchor(led, note="M5-1 首次锚定")
@@ -91,13 +91,13 @@ async def amain(home: str) -> int:
     tools: list[Any] = []
     if creds.has("bocha"):
         # K.3(M2 行):外部来源插件一律入子进程——元数据在父进程,执行在 worker
-        from naga.tools import WebSearchTool
-        from naga.worker import WorkerTool
+        from deepseek_bot.tools import WebSearchTool
+        from deepseek_bot.worker import WorkerTool
 
         tools.append(WorkerTool.of(WebSearchTool, providers_path=providers_path))
     # M4b-1 模型自动路由(E):旗舰 deepseek + 预算 qwen-flash(dashscope 凭据在场时)
-    from naga.llm import OpenAIChatAdapter, ProviderConfig
-    from naga.routing import ModelRegistry, ModelRouter, ModelSpec
+    from deepseek_bot.llm import OpenAIChatAdapter, ProviderConfig
+    from deepseek_bot.routing import ModelRegistry, ModelRouter, ModelSpec
 
     registry_specs = [ModelSpec(model_id="deepseek-v4-flash", tier="flagship",
                                 make_adapter=lambda: adapter)]
@@ -110,14 +110,14 @@ async def amain(home: str) -> int:
                                api_key=dash_cfg.api_key), "qwen-flash")))
     registry = ModelRegistry(registry_specs)
     router = ModelRouter(registry=registry, ledger=led, tools=tools)
-    from naga.memory import MemoryStore
+    from deepseek_bot.memory import MemoryStore
     memory = MemoryStore(led, home=home)  # §6.5 记忆面(召回注入/收尾提炼/遗忘)
     gateway = Gateway(led, make_adapter=lambda: adapter, tools=tools, home=home,
                       router=router, memory=memory)
 
     # ── 会话注册表(§5 sessions):闲置关闭 + 收尾整合蒸馏 ──
-    from naga.jobs import scan_job_events
-    from naga.sessions import SessionRegistry, creator_session_of, job_notify_text
+    from deepseek_bot.jobs import scan_job_events
+    from deepseek_bot.sessions import SessionRegistry, creator_session_of, job_notify_text
 
     sessions = SessionRegistry(led, memory=memory,
                                make_adapter=lambda: adapter)
@@ -125,7 +125,7 @@ async def amain(home: str) -> int:
     print("[sessions] 会话注册表已启动(闲置 60 分钟收尾整合)", flush=True)
 
     # 微信渠道:runner 经网关 lane(会话路由单一权威);guest 预算封顶(§10.1 首项)
-    from naga.wechat import WeChatChannel
+    from deepseek_bot.wechat import WeChatChannel
 
     def make_wechat_channel(_cred: Any = None) -> WeChatChannel:
         """每份绑定凭据一个专属渠道(多绑定并行;runner 闭包绑定自己的渠道)。"""
@@ -172,11 +172,11 @@ async def amain(home: str) -> int:
     gateway.attach_wechat(first_channel)          # 兼容单渠道形态(首绑定)
     gateway.attach_wechat_factory(make_wechat_channel)  # 多绑定:每凭据专属渠道
 
-    port = int(os.environ.get("NAGA_WS_PORT", str(WS_PORT)))  # 0 = 临时端口(测试/并行)
+    port = int(storage.env_opt("WS_PORT") or str(WS_PORT))  # 0 = 临时端口(测试/并行)
     port = await gateway.start("127.0.0.1", port)
 
     # 已有绑定全部随守护启动(未绑定等热启动;多绑定=多渠道并行轮询)
-    from naga.wechat import load_bindings
+    from deepseek_bot.wechat import load_bindings
 
     bindings = await asyncio.to_thread(load_bindings, home)
     first = True
@@ -193,12 +193,12 @@ async def amain(home: str) -> int:
           f"bindings={len(bindings)}", flush=True)
 
     # ── 附录 C:定时任务调度器(fire 经 lane;wallMs 兜底;C.3 触发链路) ──
-    from naga.jobs import JobScheduler, parse_budget
+    from deepseek_bot.jobs import JobScheduler, parse_budget
 
     # ── #93 补发队列(naga.notify):推送被拒→持久化,下次来消息先行补发 ──
-    from naga.notify import enqueue as _enqueue
-    from naga.notify import take as _take_pending
-    from naga.system_tools import record_delivery
+    from deepseek_bot.notify import enqueue as _enqueue
+    from deepseek_bot.notify import take as _take_pending
+    from deepseek_bot.system_tools import record_delivery
     pending_file = os.path.join(home, "state", "pending-notifies.json")
     delivery_log = os.path.join(home, "state", "notify-log.json")
 
@@ -262,14 +262,14 @@ async def amain(home: str) -> int:
     print("[jobs] 调度器已启动(30s tick;misfire 处置见账本)", flush=True)
 
     # ── M4a-2:Curator 保鲜(启动扫一次 + 7 天周期;幂等)与晋升自动触发 ──
-    from naga.curator import Curator
-    from naga.promotion import (
+    from deepseek_bot.curator import Curator
+    from deepseek_bot.promotion import (
         PromotionPipeline,
         ShadowVerifier,
         auto_trigger_candidates,
         goals_from_bundles,
     )
-    from naga.skills import SkillStore
+    from deepseek_bot.skills import SkillStore
 
     async def _curator_sweep() -> None:
         report = await asyncio.to_thread(
@@ -348,7 +348,7 @@ async def amain(home: str) -> int:
     async def _gepa_loop() -> None:
         import time as _time
 
-        from naga.gepa import GepaOptimizer
+        from deepseek_bot.gepa import GepaOptimizer
         while True:
             await asyncio.sleep(7 * 24 * 3600)  # gepa_cycle_days=7(§7.5)
             if _time.monotonic() - last_task_ts["t"] < 2 * 3600:

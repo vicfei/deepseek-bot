@@ -16,11 +16,11 @@ _skip_on_ci = pytest.mark.skipif(
     reason="K.2 SLO acceptance runs on a dedicated host; see register 2026-10-11")
 
 
-from naga import kernel, storage
-from naga.branch import WRITE_CAPTURE_OVERHEAD_SLO, BranchPool, SessionBranch
-from naga.gateway import Gateway
-from naga.ledger_store import CAS, DurableLedger
-from naga.llm import ChatResponse
+from deepseek_bot import kernel, storage
+from deepseek_bot.branch import WRITE_CAPTURE_OVERHEAD_SLO, BranchPool, SessionBranch
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.ledger_store import CAS, DurableLedger
+from deepseek_bot.llm import ChatResponse
 
 
 def _branch(tmp_path, base: dict[str, bytes] | None = None,
@@ -212,7 +212,7 @@ def test_child_sediment_settled_by_parent_commit(tmp_path):
         trace_id="tr_m32", actor_trust="owner"))
     assert result.outcome == "success" and result.reply == "父级汇总"
 
-    from naga.skills import SkillStore
+    from deepseek_bot.skills import SkillStore
     SkillStore(led)
     local_rows = led.query(
         "SELECT name FROM skill_nodes WHERE branch='local:wechat:dm:p'")
@@ -265,7 +265,7 @@ def test_write_capture_full_cycle_informational(tmp_path):
     (结算工件 ~100 个小文件原子写在慢盘上的代价,两侧 SkillStore 存储成本
     相同)。M3 出口③的取证记录在登记册(2026-10-11:拦截层低于测量噪声)。
     """
-    from naga.skills import SkillStore
+    from deepseek_bot.skills import SkillStore
 
     sessions, keys_per = 100, 2
     payload = "x" * 8190 + "\n"

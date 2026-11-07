@@ -9,12 +9,12 @@ import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from naga import kernel, storage
-from naga.agent import AgentResult
-from naga.gateway import Gateway
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.spawner import (
+from deepseek_bot import kernel, storage
+from deepseek_bot.agent import AgentResult
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.spawner import (
     SPAWN_DEPTH_HARD_CAP,
     SPAWN_DEPTH_SOFT_LIMIT,
     SpawnRejected,
@@ -239,7 +239,7 @@ def test_gateway_parent_spawns_children_end_to_end(tmp_path):
 
 def test_gateway_guest_cannot_spawn(tmp_path):
     """guest 的工具集里根本没有派生工具(结构性封死,§3.2 spawn ❌)。"""
-    from naga.gateway import tools_for_trust
+    from deepseek_bot.gateway import tools_for_trust
 
     class _FakeSpawn:
         name, description, parameters = "spawn_subagents", "d", {}

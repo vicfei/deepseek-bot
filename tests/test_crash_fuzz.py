@@ -18,7 +18,7 @@ import tempfile
 
 import pytest
 
-from naga.ledger_store import DurableLedger
+from deepseek_bot.ledger_store import DurableLedger
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _CHILD = os.path.join(_HERE, "_fuzz_child.py")

@@ -3,7 +3,7 @@
 import os
 import stat
 
-from naga.trust import (
+from deepseek_bot.trust import (
     DEFAULT_TRUST,
     UNKNOWN_CHANNEL_TRUST,
     derive_trust,

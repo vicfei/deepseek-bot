@@ -15,7 +15,7 @@ import hashlib
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from naga import kernel
+from deepseek_bot import kernel
 
 
 def _env_hash(env: dict[str, int]) -> str:

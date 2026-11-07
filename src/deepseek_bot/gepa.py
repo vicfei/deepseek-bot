@@ -16,11 +16,11 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from typing import Any
 
-from naga.curator import iter_trace_records
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse, ModelAdapter, price_cents
-from naga.promotion import PromotionPipeline, health_check
-from naga.skills import SkillStore
+from deepseek_bot.curator import iter_trace_records
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse, ModelAdapter, price_cents
+from deepseek_bot.promotion import PromotionPipeline, health_check
+from deepseek_bot.skills import SkillStore
 
 GEPA_RUN_COST_CAP_CENTS = 1000    # spec-constants gepa_run_cost_cap_cents(§7.5)
 GEPA_RUN_TOKEN_CAP = 2_000_000    # 候选 gepa_run_token_cap(价格表生效前的二级护栏)
