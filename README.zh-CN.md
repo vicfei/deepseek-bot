@@ -1,12 +1,12 @@
-# dsh dot
+# DeepSeek Bot
 
-[![CI](https://github.com/vicfei/dsh-dot/actions/workflows/ci.yml/badge.svg)](https://github.com/vicfei/dsh-dot/actions/workflows/ci.yml)
+[![CI](https://github.com/vicfei/deepseek-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/vicfei/deepseek-bot/actions/workflows/ci.yml)
 
-<p align="center"><img src="assets/banner.svg" alt="dsh dot——自进化个人智能体,天然可审计" width="880"></p>
+<p align="center"><img src="assets/banner.svg" alt="DeepSeek Bot——自进化个人智能体,天然可审计" width="880"></p>
 
 **可安全自我修改、经验可复利的自进化智能体运行时。**
 
-dsh dot 是你的私人 AI 智能体:在你的聊天渠道上应答,把经验沉淀为可复用的技能,
+DeepSeek Bot 是你的私人 AI 智能体:在你的聊天渠道上应答,把经验沉淀为可复用的技能,
 并且把它对自身做出的**每一次**修改都记为可审计、可回滚的账本条目——
 让自主性不以失控为代价。
 
@@ -14,7 +14,7 @@ dsh dot 是你的私人 AI 智能体:在你的聊天渠道上应答,把经验沉
 
 ## 有什么不一样
 
-大多数智能体框架为演示效果优化。dsh dot 为之后的十一个月优化:当智能体修改了
+大多数智能体框架为演示效果优化。DeepSeek Bot 为之后的十一个月优化:当智能体修改了
 自身状态、插件在凌晨三点崩溃、工具行为异常、或者你只是想要回昨天的系统时,
 会发生什么?架构从内核层开始就围绕这些问题构建:
 
@@ -87,14 +87,14 @@ dsh dot 是你的私人 AI 智能体:在你的聊天渠道上应答,把经验沉
 [**DeepSeek Harness**(`dsh`)](https://github.com/deepseek-ai/deepseek-harness)
 率先落地于生产。
 
-`dsh dot` 是该哲学的**独立 Python 路线后裔**,专注自进化个人智能体:
+`DeepSeek Bot` 是该哲学的**独立 Python 路线后裔**,专注自进化个人智能体:
 与 dsh(TS)零共享代码、非 fork、与 DeepSeek 及 `deepseek-ai` 组织无隶属。
-dsh 是通用 agent 框架,dsh dot 则把同一套可组合性纪律押注在一个场景上——
+dsh 是通用 agent 框架,DeepSeek Bot 则把同一套可组合性纪律押注在一个场景上——
 一个能连续运行数月、带密码学遗忘的记忆、会排程、能晋升自身技能、
 把安全规则锚进防篡改账本的个人智能体。
 
 一等公民模型适配器是 DeepSeek(本项目就是伴着 deepseek 推理模型的
-工程纪律长大的),名字也认这笔账:**dsh 星座里的一颗点**。
+工程纪律长大的),名字也认这笔账:**一颗按 dsh 路数长成的 DeepSeek bot**。
 
 ## 状态
 
@@ -117,8 +117,8 @@ dsh 是通用 agent 框架,dsh dot 则把同一套可组合性纪律押注在一
 需要 Python 3.12+。
 
 ```bash
-git clone https://github.com/vicfei/dsh-dot.git
-cd dsh-dot
+git clone https://github.com/vicfei/deepseek-bot.git
+cd deepseek-bot
 python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
 .venv/bin/pytest -q                    # 全量测试(单元 + PBT + 模糊 + 渠道)

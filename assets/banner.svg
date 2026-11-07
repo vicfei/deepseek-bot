@@ -22,7 +22,7 @@
     <circle cx="890" cy="190" r="3" fill="#7aa2ff" opacity="0.5"/>
     <path d="M865 150 L905 118 M865 150 L940 160 M865 150 L890 190 M905 118 L940 160" stroke="#7aa2ff" stroke-width="1.2" opacity="0.5"/>
   </g>
-  <text x="90" y="132" font-size="74" font-weight="800" fill="#ffffff">dsh dot</text>
+  <text x="90" y="132" font-size="68" font-weight="800" fill="#ffffff">deepseek bot</text>
   <text x="94" y="172" font-size="21" fill="#b9c6ea">self-evolving personal agent · auditable by construction</text>
   <g font-size="16" font-weight="600">
     <rect x="94" y="200" rx="14" width="196" height="32" fill="#1d2a56" stroke="#3d4f92"/>
@@ -32,5 +32,5 @@
     <rect x="562" y="200" rx="14" width="256" height="32" fill="#1d2a56" stroke="#3d4f92"/>
     <text x="690" y="221" fill="#dbe4ff" text-anchor="middle">constitution-anchored</text>
   </g>
-  <text x="90" y="60" font-size="15" fill="#66759f" letter-spacing="3">A DOT IN THE DSH CONSTELLATION</text>
+  <text x="90" y="60" font-size="15" fill="#66759f" letter-spacing="3">FROM THE DSH CONSTELLATION</text>
 </svg>

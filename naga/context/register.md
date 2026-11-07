@@ -489,3 +489,11 @@
 
 - 用户反馈 dsh-super-agent 主页图片(banner/三规则图/真实 demo GIF/架构 SVG)带来 3 star/日 → 解码其配方"每张图有职责:身份→论点→证据→机制",为 dsh dot 照方自制四件(全自产,零外部素材):assets/banner.svg(星点星座 nod)、bargain.svg("自主性是交换来的"论点图)、architecture.svg(渠道→车道→回路→账本/CAS/投影/宪法,K.3 标注 planned)、demo-doctor.gif(**生产 daemon 真实 naga doctor 输出**逐帧打字渲染:1111 条账本链校验通过+宪法锚点匹配,PIL 自渲 43KB/8 帧)。双语 README 四点嵌入(Try-it 配"每一行都是真实输出"照抄其诚实标注法)。三门绿直推;raw 链接 200 验证。
 - 遗留:social preview 图(GitHub 设置面板需手动上传或 GraphQL,建议用户传 assets/banner.svg 导出的 PNG)。
+
+## 2026-11-07 四次更名 dsh dot → deepseek bot(用户命名决策)
+
+- 用户定名 **deepseek bot**(展示名 DeepSeek Bot)。执行:repo → `vicfei/deepseek-bot`(旧地址 301);README 双语换名(品牌位+Lineage 落款句);因名字不再是"dot",Lineage 收尾句改为"a DeepSeek bot, built the dsh way"(名字认账 DeepSeek,路数认账 dsh),banner kicker 同步改 FROM THE DSH CONSTELLATION。
+- 视觉资产:banner.svg 字标换新(font 74→68 防溢出);social-preview.png 重生成(PIL 1280×640,初版字标 118px 撞星座图、三胶囊溢出右缘——程序化边界检查抓出,缩至 90/24px 后通过;脚本未入库,与上批一致 PNG 即源)。
+- 代码层仍 naga(包/CLI/home,改名批维持撤销);描述行同步 "DeepSeek Bot — your personal AI agent: self-evolving, fully auditable (hash-chained ledger + constitution), live on WeChat."
+- 商标注意:公开名含 "DeepSeek" 而声明无隶属——Lineage 的无关联声明保留并加重(名称描述性使用风险已向用户提示,用户拍板)。
+- 内部链(仅登记册/brainvault):Naga→GrowBuddy→PersonalAgent→dsh dot(11-01)→deepseek bot(11-07)。推广文案全部作废(dsh dot 版从未出过;后续按需重出)。
