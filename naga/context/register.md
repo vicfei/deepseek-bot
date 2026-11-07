@@ -505,3 +505,4 @@
 - 顺手兑现两笔欠账:①**wheel 盲点修复**——webchat/index.html 缺 package-data 配置进不了 wheel(pip 装完网关 404),已双向实证并修(`[tool.setuptools.package-data]`);②channel_version `naga-1.0.0` → **`2.0.0`**(公开协议规格值,wechatbot.dev 对照结论)。README 双语命令行更名 + git 直装行。
 - 三门绿(351+1 skip 基线不变)+ 冻结 20/20;部署序列:停 daemon → 拉 main → pip 重装 → 重锚 → 启动验证(soak 天数连续性为验收项)。
 - agent 自我身份提示词、CLI prog、WebChat 占位文案同步 DeepSeek Bot。更名链终稿:Naga→GrowBuddy→PersonalAgent→dsh dot→**deepseek bot**(公开)/naga→**deepseek_bot**(代码)。
+- 部署结果(11-07):停机干净(clean_shutdown=True)→ 重装(卸 naga-0.1.0,deepseek-bot 0.2.0)→ **宪法重锚 6b6291db…→d943bdf4…**(部署前先只读求值证明漂移真实存在,重锚入账后 verify=match)→ 启动即绿:宪法 anchor=match / **soak 22.88/30 连续 P0=0** / bindings=2 双渠道轮询 / doctor 1229 条链 ok。git 直装公开 URL 端到端验证(fresh venv pip install git+ → CLI 可用 + webchat 页面在包内——盲点修复随真实工件复证)。
