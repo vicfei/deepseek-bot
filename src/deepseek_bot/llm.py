@@ -17,7 +17,7 @@ from typing import Any, Protocol, cast
 import httpx
 from pydantic import BaseModel, ConfigDict
 
-from naga import storage
+from deepseek_bot import storage
 
 TOOL_DESC_MAX_CHARS = 500  # spec-constants tool_desc_max_chars / 接口 §5.4(防投毒)
 

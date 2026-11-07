@@ -5,10 +5,10 @@ import os
 from dataclasses import dataclass
 from typing import Any
 
-from naga import notify
-from naga.gateway import Gateway
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
+from deepseek_bot import notify
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
 
 
 @dataclass
@@ -126,7 +126,7 @@ def test_auto_promotion_hook_inline_no_thread_error(tmp_path):
     """#93 副修:promotion 钩子内联查询(修复 to_thread 跨线程 sqlite)。"""
     import inspect
 
-    from naga import daemon
+    from deepseek_bot import daemon
     src = inspect.getsource(daemon)
     assert "asyncio.to_thread(\n                auto_trigger_candidates" not in src
     assert "auto_trigger_candidates(led, session_key)" in src

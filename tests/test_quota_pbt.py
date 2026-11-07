@@ -16,8 +16,8 @@ import asyncio
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from naga import kernel
-from naga.kernel import QuotaExhausted, QuotaPolicy, QuotaReq
+from deepseek_bot import kernel
+from deepseek_bot.kernel import QuotaExhausted, QuotaPolicy, QuotaReq
 
 UNIVERSE = {"fs", "gpu", "net"}
 

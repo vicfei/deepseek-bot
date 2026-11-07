@@ -7,19 +7,19 @@ from typing import Any
 
 import pytest
 
-from naga import storage
-from naga.agent import AgentResult
-from naga.daemon import OWNER_TASK_BASE_BUDGET, reply_for
-from naga.gateway import (
+from deepseek_bot import storage
+from deepseek_bot.agent import AgentResult
+from deepseek_bot.daemon import OWNER_TASK_BASE_BUDGET, reply_for
+from deepseek_bot.gateway import (
     GUEST_TASK_TOKEN_BUDGET,
     Gateway,
     event_visible_to,
     task_budget,
     tools_for_trust,
 )
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.wechat import ILinkClient, WeChatChannel
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.wechat import ILinkClient, WeChatChannel
 
 # ---- §10.1 预算矩阵 ----
 
@@ -211,12 +211,12 @@ def test_event_visibility_matrix(viewer, viewer_session, event, session_key, exp
     ("whoami.what", "owner", None, None, "full"),
 ])
 def test_event_decision_full_matrix(event, viewer, viewer_session, session_key, expected):
-    from naga.gateway import event_decision
+    from deepseek_bot.gateway import event_decision
     assert event_decision(viewer, viewer_session, event, session_key) == expected
 
 
 def test_event_class_classification():
-    from naga.gateway import event_class
+    from deepseek_bot.gateway import event_class
     assert event_class("agent.completed") == "session"
     assert event_class("session.open") == "session"
     assert event_class("skill.use") == "asset"
@@ -242,7 +242,7 @@ class _RiskyTool:
 
 
 def test_tool_risk_precedence():
-    from naga.gateway import tool_risk
+    from deepseek_bot.gateway import tool_risk
     assert tool_risk(_RiskyTool("explicit", 3)) == 3            # 显式 risk_level 优先
     assert tool_risk(_ReadTool()) == 0                          # side_effect=read → R0
     assert tool_risk(_WriteTool()) == 2                         # side_effect=write → R2
@@ -260,8 +260,8 @@ def test_tools_for_trust_r_ceilings():
 
 
 def test_web_search_declared_r0():
-    from naga.gateway import tool_risk
-    from naga.tools import WebSearchTool
+    from deepseek_bot.gateway import tool_risk
+    from deepseek_bot.tools import WebSearchTool
     assert WebSearchTool.risk_level == 0
     assert tool_risk(WebSearchTool) == 0
 
@@ -269,7 +269,7 @@ def test_web_search_declared_r0():
 # ---- summary 投递(§4.1 guest/known 内容裁剪) ----
 
 def test_summarize_event_clips_to_status_fields():
-    from naga.gateway import summarize_event
+    from deepseek_bot.gateway import summarize_event
     payload = {"name": "web-research", "version": 3, "status": "active",
                "branch": "local:s1", "content": "全文不外泄", "trace_id": "tr_x"}
     clipped = summarize_event(payload)
@@ -278,7 +278,7 @@ def test_summarize_event_clips_to_status_fields():
 
 
 def test_broadcast_delivers_summary_to_guest_full_to_owner(tmp_path):
-    from naga.gateway import summarize_event  # noqa: F401 —— 同族断言见下
+    from deepseek_bot.gateway import summarize_event  # noqa: F401 —— 同族断言见下
     gw, led = _gateway(tmp_path, _CountingAdapter)
     owner_ws, guest_ws = _FakeWS(), _FakeWS()
     gw._conns.update({owner_ws, guest_ws})

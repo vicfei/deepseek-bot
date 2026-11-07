@@ -6,14 +6,14 @@ import asyncio
 import json
 from typing import Any
 
-from naga import gepa as gepa_mod
-from naga import storage
-from naga.gepa import CountingAdapter, GepaOptimizer, UsageCounter
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.promotion import PromotionPipeline, ShadowVerifier, goals_from_bundles
-from naga.skills import SkillStore
-from naga.trace import TraceRecorder
+from deepseek_bot import gepa as gepa_mod
+from deepseek_bot import storage
+from deepseek_bot.gepa import CountingAdapter, GepaOptimizer, UsageCounter
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.promotion import PromotionPipeline, ShadowVerifier, goals_from_bundles
+from deepseek_bot.skills import SkillStore
+from deepseek_bot.trace import TraceRecorder
 
 PROPOSAL = ("id: budget-aware-planning\n"
             "## 何时使用\n任务较大或需要分步执行时。\n"
@@ -72,7 +72,7 @@ def test_failure_population_and_clustering(tmp_path):
                         inbound={"text": "影子目标"})
     rec.finish(outcome="aborted", cost_tokens=1, failure_analysis="预算耗尽")
 
-    from naga.promotion import ShadowVerifier  # noqa: F401
+    from deepseek_bot.promotion import ShadowVerifier  # noqa: F401
 
     class _Noop:
         async def chat(self, messages, tools=None, *, max_tokens=1024):
@@ -213,7 +213,7 @@ def test_replay_bundle_roundtrip_fidelity(tmp_path):
         rec.step(1, "llm", "m", True, 5, 10, args={}, results={"x": "y" * 3000})
         rec.finish(outcome="success", cost_tokens=10)
 
-    from naga.curator import iter_trace_records
+    from deepseek_bot.curator import iter_trace_records
     records = iter_trace_records(led)
     assert len(records) == len(goals)
     seen: set[str] = set()

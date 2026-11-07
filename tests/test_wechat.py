@@ -6,12 +6,12 @@ import base64
 import os
 from typing import Any
 
-from naga import storage
-from naga.gateway import Gateway
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.trust import derive_trust, grant_trust
-from naga.wechat import (
+from deepseek_bot import storage
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.trust import derive_trust, grant_trust
+from deepseek_bot.wechat import (
     ILinkClient,
     WeChatChannel,
     WeChatCredential,

@@ -3,11 +3,11 @@
 import asyncio
 from typing import Any
 
-from naga import storage
-from naga.gateway import Gateway
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.wechat import ILinkClient, WeChatChannel, load_state, split_for_wechat
+from deepseek_bot import storage
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.wechat import ILinkClient, WeChatChannel, load_state, split_for_wechat
 
 
 class _FakeReq:

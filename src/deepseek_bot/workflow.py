@@ -23,14 +23,14 @@ from typing import Any, cast
 
 from pydantic import BaseModel, field_validator
 
-from naga import kernel
-from naga.agent import AgentLoop
-from naga.branch import SessionBranch
-from naga.curator import iter_trace_records, scan_skill_events
-from naga.ledger_store import DurableLedger
-from naga.llm import ModelAdapter
-from naga.skills import SkillStore
-from naga.trace import TraceRecorder
+from deepseek_bot import kernel
+from deepseek_bot.agent import AgentLoop
+from deepseek_bot.branch import SessionBranch
+from deepseek_bot.curator import iter_trace_records, scan_skill_events
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ModelAdapter
+from deepseek_bot.skills import SkillStore
+from deepseek_bot.trace import TraceRecorder
 
 WORKFLOW_SCHEMA = "naga-workflow/0"
 WORKFLOW_COMPILE_MIN_USES = 50          # F.1:复用 ≥ 50(数据触发,不允许人工冲动编译)

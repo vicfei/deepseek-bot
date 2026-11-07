@@ -26,11 +26,11 @@ from typing import Any, cast
 
 from aiohttp import WSMsgType, web
 
-from naga import kernel, storage
-from naga.agent import AgentLoop, AgentResult
-from naga.ledger_store import DurableLedger
-from naga.llm import ModelAdapter
-from naga.skills import SkillStore
+from deepseek_bot import kernel, storage
+from deepseek_bot.agent import AgentLoop, AgentResult
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ModelAdapter
+from deepseek_bot.skills import SkillStore
 
 WS_PORT = 18789               # spec-constants ws_port / 接口 §2.1
 LANE_MAX_COUNT = 8            # spec-constants lane_max_count / GAP9
@@ -221,7 +221,7 @@ class Gateway:
         app.router.add_get("/wechat/unbind", self._wechat_unbind)
         if self._router is not None:
             async def _routing_stats(_request: web.Request) -> web.Response:
-                from naga.routing import routing_dashboard as _dash
+                from deepseek_bot.routing import routing_dashboard as _dash
                 router = self._router
                 assert router is not None  # 分支条件保证
                 return web.json_response(_dash(self._ledger, router.registry))
@@ -406,14 +406,14 @@ class Gateway:
     # ---- job.* 方法面(接口 §3.5,附录 C;回环=owner) ----
 
     async def _job_create(self, req: dict[str, Any]) -> dict[str, Any]:
-        from naga.jobs import (
+        from deepseek_bot.jobs import (
             JOB_DEFAULT_BUDGET_TOKENS,
             JOB_WALL_MS_DEFAULT,
             JobSpec,
             compile_natural_language,
             fires_per_month,
         )
-        from naga.trust import derive_trust
+        from deepseek_bot.trust import derive_trust
 
         ik = str(req.get("idempotency_key") or "")
         if not ik:
@@ -465,7 +465,7 @@ class Gateway:
             if params.get("expires_at"):
                 spec.expires_at = str(params["expires_at"])
         try:
-            from naga.jobs import JobStore
+            from deepseek_bot.jobs import JobStore
             JobStore(self._ledger).create(spec, actor=session_key)
         except ValueError as err:
             raise GatewayError("JOB.INVALID", str(err)) from err
@@ -490,7 +490,7 @@ class Gateway:
         return result
 
     def _job_list(self, req: dict[str, Any]) -> dict[str, Any]:
-        from naga.jobs import JobStore, scan_job_events
+        from deepseek_bot.jobs import JobStore, scan_job_events
 
         params: dict[str, Any] = req.get("params") or {}
         events = scan_job_events(self._ledger)
@@ -507,7 +507,7 @@ class Gateway:
         return {"items": items, "count": len(items)}
 
     def _job_transition(self, method: str, req: dict[str, Any]) -> dict[str, Any]:
-        from naga.jobs import JobStore
+        from deepseek_bot.jobs import JobStore
 
         params: dict[str, Any] = req.get("params") or {}
         job_id = str(params.get("job_id") or "")
@@ -580,7 +580,7 @@ class Gateway:
                 outcome="rejected", trace_id=trace_id, steps=0, tokens=0, cost_cents=0)
         self._note_activity(session_key, actor_trust)
         kern = kernel.Kernel(ledger=cast("kernel.Ledger", self._ledger))  # 鸭子类型
-        from naga.spawner import SubAgentSpawner  # 局部导入:spawner 依赖本模块,避免环
+        from deepseek_bot.spawner import SubAgentSpawner  # 局部导入:spawner 依赖本模块,避免环
 
         # M4b-1 路由(E.3):任务级选型——已证实簇用预算模型,否则旗舰(只向下探索)
         spec = self._router.pick(goal) if self._router is not None else None
@@ -600,7 +600,7 @@ class Gateway:
         if self._home is not None:  # #95 自省挂载:本会话绑定的运行时工具
             # 信任门控不可绕过:会话工具同样过 §10.1 档位过滤(装配路径
             # 上的门,不只函数里有门——测试抓过 guest 漏见 R1 工具的洞)
-            from naga.system_tools import session_system_tools
+            from deepseek_bot.system_tools import session_system_tools
             session_tools = session_system_tools(self._ledger, self._home,
                                                  session_key, actor_trust,
                                                  make_adapter)
@@ -650,7 +650,7 @@ class Gateway:
         """按会话路由投递(定时任务结果→微信;附录 C.5 的当前形态):
         wechat:dm:peer → 绑定渠道实例(peer==binder,allowlist 派生实证;
         单绑定回落)。投递尽力而为,失败不抛(返回 False)。"""
-        from naga.sessions import parse_session_channel
+        from deepseek_bot.sessions import parse_session_channel
         channel, peer = parse_session_channel(session_key)
         if channel != "wechat" or not peer:
             return False
@@ -677,7 +677,7 @@ class Gateway:
     def _routing_bookkeeping(self, goal: str, session_key: str,
                              spec: Any, result: Any) -> None:
         """路由记账 + 触发影子探索(E.4);后台化,异常绝不影响任务结果。"""
-        from naga.agent import cluster_of
+        from deepseek_bot.agent import cluster_of
         router = self._router
         if router is None:
             return
@@ -708,7 +708,7 @@ class Gateway:
         local:{session} 分支;manifest 与差异值入 CAS;生死入账。
         §6.5:记忆域同机制——memory:{layer}:{id} 键 commit 才物化(闸门在
         MemoryStore 单点;坏条目丢弃不阻断结算)。"""
-        from naga.branch import SessionBranch
+        from deepseek_bot.branch import SessionBranch
 
         def base_get(key: str) -> bytes | None:
             if not key.startswith("skill:"):
@@ -777,7 +777,7 @@ class Gateway:
 
     # ---- 微信绑定管理面(owner-only 回环;宪法层条款由网关回环绑定保证) ----
     async def _wechat_bind_start(self, _request: web.Request) -> web.Response:
-        from naga.wechat import ILinkClient
+        from deepseek_bot.wechat import ILinkClient
         req = self._wechat_request  # 测试注入
         try:
             binding = await (ILinkClient.request_qrcode(req) if req is not None
@@ -793,8 +793,8 @@ class Gateway:
             "instruction": "用微信扫码授权(仅支持单聊)"})
 
     async def _wechat_bind_poll(self, request: web.Request) -> web.Response:
-        from naga.trust import derive_trust, grant_trust
-        from naga.wechat import ILinkClient, WeChatCredential, save_binding
+        from deepseek_bot.trust import derive_trust, grant_trust
+        from deepseek_bot.wechat import ILinkClient, WeChatCredential, save_binding
         qrcode = request.match_info["qrcode"]
         req = self._wechat_request
         status = await (ILinkClient.poll_binding_status(qrcode, req) if req is not None
@@ -854,7 +854,7 @@ class Gateway:
                 ch.start(cred)
 
     async def _wechat_status(self, _request: web.Request) -> web.Response:
-        from naga.wechat import load_bindings
+        from deepseek_bot.wechat import load_bindings
         home = self._home or storage.resolve_home()
         bindings = await asyncio.to_thread(load_bindings, home)
         entries: list[dict[str, Any]] = []
@@ -870,7 +870,7 @@ class Gateway:
             "bindings": entries})
 
     async def _wechat_unbind(self, request: web.Request) -> web.Response:
-        from naga.wechat import clear_credential, remove_binding
+        from deepseek_bot.wechat import clear_credential, remove_binding
         home = self._home or storage.resolve_home()
         binder = request.query.get("binder")
         if binder is None:
@@ -889,7 +889,7 @@ class Gateway:
             ch.stop()
         self._ledger.append("channel.unbound", "root",
                             {"channel": "wechat", "binder": binder})
-        from naga.wechat import load_bindings
+        from deepseek_bot.wechat import load_bindings
         remaining = len(await asyncio.to_thread(load_bindings, home))
         return web.json_response({"ok": True, "message": f"已解绑 {binder}",
                                   "remaining": remaining})

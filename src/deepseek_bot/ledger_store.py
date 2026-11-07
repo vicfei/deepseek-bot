@@ -26,7 +26,7 @@ from typing import Any, TextIO
 import zstandard
 from pydantic import BaseModel, ConfigDict, ValidationError
 
-from naga import storage
+from deepseek_bot import storage
 
 # 值来自 docs/design/spec-constants.yaml(authority 注明);代码常量模块化待后续批次
 INLINE_PAYLOAD_MAX_BYTES = 1024           # ledger_inline_payload_max_bytes / 数据模型 §3.1

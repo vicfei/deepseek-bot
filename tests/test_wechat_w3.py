@@ -11,9 +11,9 @@ from typing import Any
 import pytest
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
-from naga import storage, wechat
-from naga.ledger_store import CAS
-from naga.wechat import (
+from deepseek_bot import storage, wechat
+from deepseek_bot.ledger_store import CAS
+from deepseek_bot.wechat import (
     ILinkClient,
     WeChatChannel,
     cdn_download_url,

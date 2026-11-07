@@ -4,11 +4,11 @@ import asyncio
 import json
 import os
 
-from naga.gateway import Gateway, tools_for_trust
-from naga.jobs import JobStore
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.system_tools import (
+from deepseek_bot.gateway import Gateway, tools_for_trust
+from deepseek_bot.jobs import JobStore
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.system_tools import (
     JobCreateTool,
     SystemStatusTool,
     record_delivery,
@@ -59,7 +59,7 @@ def test_system_status_owner_vs_guest(tmp_path):
 
 
 def _job_spec():
-    from naga.jobs import JobSpec
+    from deepseek_bot.jobs import JobSpec
     return JobSpec(job_id="job_t1", schedule="0 7 * * *",
                    timezone="Asia/Shanghai", goal="摘要",
                    trust_snapshot="owner",

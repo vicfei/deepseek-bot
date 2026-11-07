@@ -497,3 +497,11 @@
 - 代码层仍 naga(包/CLI/home,改名批维持撤销);描述行同步 "DeepSeek Bot — your personal AI agent: self-evolving, fully auditable (hash-chained ledger + constitution), live on WeChat."
 - 商标注意:公开名含 "DeepSeek" 而声明无隶属——Lineage 的无关联声明保留并加重(名称描述性使用风险已向用户提示,用户拍板)。
 - 内部链(仅登记册/brainvault):Naga→GrowBuddy→PersonalAgent→dsh dot(11-01)→deepseek bot(11-07)。推广文案全部作废(dsh dot 版从未出过;后续按需重出)。
+
+## 2026-11-07 代码层改名批:naga → deepseek_bot(名字定稿,用户拍板)
+
+- 用户定名 **deepseek-bot** 终稿,解锁压了两周的代码层改名批。映射:dist `deepseek-bot`(PyPI 空闲已核)/import 包 `src/deepseek_bot`/CLI `deepseek-bot`/版本 0.2.0;env 前缀 `DEEPSEEK_BOT_*`(保留 `NAGA_*` 回退读,兼容窗口);home 默认 `~/.deepseek-bot`,**存量 `~/.naga` 自动沿用**(_default_home 探测回退——soak 时钟/账本/凭据/密钥连续性优先,迁移属显式动作)。
+- **宪法重锚定**:R5 活体锚点模块路径 naga.* → deepseek_bot.* → 规则清单哈希必变,生产账本锚 6b6291db… 判漂移即熔断——按设计走合法路径:部署时 `constitution.anchor(reanchor=True)` 入账(恰是 §7.6 留的门,也是 K.3 计划中 C2/C3 锚点迁移的预演)。**保留不动**:数据格式 ID `naga-constitution/0`/`naga-branch/0`/`naga-media/0`(历史数据兼容面,改之无益徒增偏移)。
+- 顺手兑现两笔欠账:①**wheel 盲点修复**——webchat/index.html 缺 package-data 配置进不了 wheel(pip 装完网关 404),已双向实证并修(`[tool.setuptools.package-data]`);②channel_version `naga-1.0.0` → **`2.0.0`**(公开协议规格值,wechatbot.dev 对照结论)。README 双语命令行更名 + git 直装行。
+- 三门绿(351+1 skip 基线不变)+ 冻结 20/20;部署序列:停 daemon → 拉 main → pip 重装 → 重锚 → 启动验证(soak 天数连续性为验收项)。
+- agent 自我身份提示词、CLI prog、WebChat 占位文案同步 DeepSeek Bot。更名链终稿:Naga→GrowBuddy→PersonalAgent→dsh dot→**deepseek bot**(公开)/naga→**deepseek_bot**(代码)。

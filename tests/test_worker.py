@@ -1,7 +1,7 @@
 """批次 5 测试:worker 隔离穿透(出口③)+ 渠道热插拔 unbind→rebind(出口①)。
 
-worker 测试起真实子进程(python -m naga.worker)但全部走本地管道与测试
-工具注册表(NAGA_WORKER_TEST_TOOLS=1),零外网。
+worker 测试起真实子进程(python -m deepseek_bot.worker)但全部走本地管道与测试
+工具注册表(DEEPSEEK_BOT_WORKER_TEST_TOOLS=1),零外网。
 """
 
 import asyncio
@@ -10,14 +10,14 @@ from typing import Any
 
 import pytest
 
-from naga import storage
-from naga.gateway import Gateway
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.wechat import WeChatChannel, WeChatCredential, load_bindings
-from naga.worker import WorkerTool
+from deepseek_bot import storage
+from deepseek_bot.gateway import Gateway
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.wechat import WeChatChannel, WeChatCredential, load_bindings
+from deepseek_bot.worker import WorkerTool
 
-_ENV = {"NAGA_WORKER_TEST_TOOLS": "1"}
+_ENV = {"DEEPSEEK_BOT_WORKER_TEST_TOOLS": "1"}
 
 
 def _worker(name: str, call_timeout: float = 10.0) -> WorkerTool:
@@ -123,7 +123,7 @@ def test_worker_child_exits_on_stdin_eof():
     async def scenario():
         nonlocal proc
         proc = await asyncio.create_subprocess_exec(
-            sys.executable, "-m", "naga.worker", "/nonexistent/providers.json",
+            sys.executable, "-m", "deepseek_bot.worker", "/nonexistent/providers.json",
             stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.DEVNULL)
         assert proc.stdin is not None
@@ -209,8 +209,8 @@ def test_direct_tool_error_does_not_kill_task(tmp_path):
 
 
 def test_worker_tool_metadata_mirrors_risk(tmp_path):
-    from naga.gateway import tool_risk
-    from naga.tools import WebSearchTool
+    from deepseek_bot.gateway import tool_risk
+    from deepseek_bot.tools import WebSearchTool
 
     wt = WorkerTool.of(WebSearchTool, providers_path="/nonexistent")
     assert wt.name == "web_search" and wt.risk_level == 0

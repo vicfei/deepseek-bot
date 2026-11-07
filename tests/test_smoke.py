@@ -1,6 +1,6 @@
-import naga
+import deepseek_bot as dsb
 
 
 def test_package_importable():
-    assert naga.__name__ == "naga"
-    assert naga.__version__
+    assert dsb.__name__ == "deepseek_bot"
+    assert dsb.__version__

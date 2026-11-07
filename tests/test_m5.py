@@ -4,9 +4,9 @@ fuse) and the soak runtime (clock, P0 recording, heartbeats, report)."""
 
 import pytest
 
-from naga import soak as soak_mod
-from naga import storage
-from naga.constitution import (
+from deepseek_bot import soak as soak_mod
+from deepseek_bot import storage
+from deepseek_bot.constitution import (
     ConstitutionViolation,
     anchor,
     anchored_sha,
@@ -14,8 +14,8 @@ from naga.constitution import (
     evaluate,
     verify,
 )
-from naga.ledger_store import DurableLedger
-from naga.soak import (
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.soak import (
     SOAK_DAYS,
     ensure_started,
     health_check,
@@ -43,7 +43,7 @@ def test_constitution_enumerable_and_green():
 def test_tamper_policy_value_triggers_fuse(tmp_path, monkeypatch):
     _home_dir, led = _home(tmp_path)
     anchor(led)
-    from naga import gateway
+    from deepseek_bot import gateway
     monkeypatch.setattr(gateway, "GUEST_TASK_TOKEN_BUDGET", 999_999)  # 越权改预算
     report = evaluate()
     assert not report.ok and any("C2a" in v for v in report.violations)
@@ -61,7 +61,7 @@ def test_ledger_anchoring_and_drift(tmp_path):
     assert report.ok
 
     # 篡改宪法(改规则期望值 → 摘要变化)→ 与账本锚定漂移 → 熔断
-    from naga import constitution as c
+    from deepseek_bot import constitution as c
     original = c.rules
     tampered = list(original())
     tampered[1] = type(tampered[1])(rid="C2a", domain=tampered[1].domain,
@@ -152,7 +152,7 @@ def test_soak_state_private(tmp_path):
 def test_doctor_constitution_section(tmp_path):
     home, led = _home(tmp_path)
     led.close()
-    from naga.cli import _constitution_report
+    from deepseek_bot.cli import _constitution_report
     report = _constitution_report(home)
     assert report["ok"] and report["anchored_match"] is None or \
         report["anchored_match"]  # 未锚定(only evaluate)或锚定一致

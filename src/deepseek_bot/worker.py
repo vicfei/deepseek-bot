@@ -21,26 +21,27 @@ import os
 import sys
 from typing import Any, cast
 
-from naga.llm import CredentialStore
+from deepseek_bot import storage
+from deepseek_bot.llm import CredentialStore
 
 CALL_TIMEOUT_SEC = 45.0   # 单次调用总额限(bocha 内部 httpx 30s,留头寸)
 START_TIMEOUT_SEC = 15.0  # 子进程冷启动上限
 
 # 测试专用工具注册表(NAGA_WORKER_TEST_TOOLS=1 才装配;零外网)
-_TEST_TOOLS_NOTE = "仅测试装配(NAGA_WORKER_TEST_TOOLS=1),不进生产"
+_TEST_TOOLS_NOTE = "仅测试装配(DEEPSEEK_BOT_WORKER_TEST_TOOLS=1),不进生产"
 
 
 def _child_main(providers_path: str) -> int:
     """子进程入口:注册表 + stdin→stdout JSON 行循环。"""
     registry: dict[str, Any] = {}
     try:
-        from naga.tools import WebSearchTool
+        from deepseek_bot.tools import WebSearchTool
 
         store = CredentialStore(providers_path)
         registry["web_search"] = WebSearchTool(store)
     except (OSError, KeyError):
         pass  # 凭据缺失:该工具调用将按 unknown tool 降级,不影响其他工具
-    if os.environ.get("NAGA_WORKER_TEST_TOOLS", "") == "1":
+    if storage.env_opt("WORKER_TEST_TOOLS") == "1":
         registry["echo"] = _EchoTool()
         registry["fail"] = _FailTool()
         registry["boom"] = _BoomTool()
@@ -178,7 +179,7 @@ class WorkerTool:
             try:
                 self._proc = await asyncio.wait_for(
                     asyncio.create_subprocess_exec(
-                        self._python, "-m", "naga.worker", self._providers_path,
+                        self._python, "-m", "deepseek_bot.worker", self._providers_path,
                         stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE,
                         stderr=asyncio.subprocess.DEVNULL, env=env),
                     START_TIMEOUT_SEC)
@@ -210,7 +211,7 @@ class WorkerTool:
 
 def main() -> int:
     if len(sys.argv) != 2:
-        print("usage: python -m naga.worker <providers.json>", file=sys.stderr)
+        print("usage: python -m deepseek_bot.worker <providers.json>", file=sys.stderr)
         return 2
     return _child_main(sys.argv[1])
 

@@ -16,7 +16,7 @@ import tempfile
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from naga.ledger_store import DurableLedger
+from deepseek_bot.ledger_store import DurableLedger
 
 KINDS = [
     "effect.register",

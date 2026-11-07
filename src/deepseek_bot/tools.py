@@ -10,7 +10,7 @@ from typing import Any
 
 import httpx
 
-from naga.llm import CredentialStore
+from deepseek_bot.llm import CredentialStore
 
 _WEB_SEARCH_PARAMETERS: dict[str, Any] = {
     "type": "object",

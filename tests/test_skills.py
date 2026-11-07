@@ -2,8 +2,8 @@
 
 import os
 
-from naga.ledger_store import DurableLedger
-from naga.skills import SKILL_MAX_BYTES, SkillStore
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.skills import SKILL_MAX_BYTES, SkillStore
 
 _SKILL_MD = """---
 name: pricing-snapshot-diff

@@ -143,13 +143,20 @@ python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 .venv/bin/pyright src                  # strict type check
 ```
 
-Running the daemon (gateway on loopback + WeChat channel) additionally needs a
-credentials file at `~/.naga/credentials/providers.json` (0600) — see
-`src/naga/llm.py` for the expected provider entries.
+Or install straight from git — the project is pip-packaged:
 
 ```bash
-naga daemon start      # http://127.0.0.1:18789 — WebChat console
-naga doctor            # self-check
+pip install git+https://github.com/vicfei/deepseek-bot.git
+```
+
+Running the daemon (gateway on loopback + WeChat channel) additionally needs a
+credentials file at `~/.deepseek-bot/credentials/providers.json` (0600) — see
+`src/deepseek_bot/llm.py` for the expected provider entries. (Existing
+`~/.naga` homes keep working: the runtime falls back to them automatically.)
+
+```bash
+deepseek-bot daemon start      # http://127.0.0.1:18789 — WebChat console
+deepseek-bot doctor            # self-check
 ```
 
 ## Try it
@@ -170,7 +177,7 @@ small-circle deployment*: a fresh QR binding is granted **owner** trust on
 your instance, and the WebChat console is loopback-only by design — see
 `docs/design/` for the trust model before opening an instance to strangers.
 
-![demo: naga doctor on the production daemon — ledger chain verified, constitution anchor matched](assets/demo-doctor.gif)
+![demo: deepseek-bot doctor on the production daemon — ledger chain verified, constitution anchor matched](assets/demo-doctor.gif)
 
 *(Every line is real output from the live production daemon — running
 unattended since 2026-10-15.)*
@@ -182,7 +189,7 @@ unattended since 2026-10-15.)*
 ## Repository layout
 
 ```
-src/naga/
+src/deepseek_bot/
   kernel.py        # L0 seed kernel (frozen baseline twin; in-place evolution follows RFCs)
   ledger_store.py  # durable ledger: append log, Merkle seals, snapshots, CAS, SQLite projection
   gateway.py       # WebSocket gateway: lane queues, trust policy, event visibility matrix

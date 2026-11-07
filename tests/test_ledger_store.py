@@ -6,8 +6,8 @@ import json
 import os
 import sqlite3
 
-from naga import kernel
-from naga.ledger_store import CAS, DurableLedger, _merkle_root
+from deepseek_bot import kernel
+from deepseek_bot.ledger_store import CAS, DurableLedger, _merkle_root
 
 
 def _rows(db_path: str, sql: str) -> list[tuple]:

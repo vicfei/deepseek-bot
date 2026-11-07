@@ -28,13 +28,13 @@ import uuid
 from collections.abc import Callable
 from typing import Any, cast
 
-from naga import kernel
-from naga.agent import AgentLoop
-from naga.branch import SessionBranch
-from naga.gateway import tools_for_trust
-from naga.ledger_store import DurableLedger
-from naga.llm import ModelAdapter
-from naga.skills import SkillStore
+from deepseek_bot import kernel
+from deepseek_bot.agent import AgentLoop
+from deepseek_bot.branch import SessionBranch
+from deepseek_bot.gateway import tools_for_trust
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ModelAdapter
+from deepseek_bot.skills import SkillStore
 
 SPAWN_DEPTH_SOFT_LIMIT = 3  # candidate spec-constant spawn_depth_soft_limit (§3.4)
 SPAWN_DEPTH_HARD_CAP = 5    # candidate spec-constant spawn_depth_hard_cap (INC3)

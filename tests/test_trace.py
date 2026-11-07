@@ -3,8 +3,8 @@
 import json
 import os
 
-from naga.ledger_store import DurableLedger
-from naga.trace import REPLAY_BUNDLE_STEP_TRUNCATE_BYTES, TraceRecorder
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.trace import REPLAY_BUNDLE_STEP_TRUNCATE_BYTES, TraceRecorder
 
 
 def test_trace_record_and_bundle_roundtrip(tmp_path):

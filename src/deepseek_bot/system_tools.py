@@ -22,8 +22,8 @@ import json
 import os
 from typing import Any, ClassVar, cast
 
-from naga.jobs import JobStore, compile_natural_language, scan_job_events
-from naga.notify import load as load_pending
+from deepseek_bot.jobs import JobStore, compile_natural_language, scan_job_events
+from deepseek_bot.notify import load as load_pending
 
 DELIVERY_LOG_MAX = 50  # 投递日志封顶(环形)
 
@@ -152,7 +152,7 @@ class JobCreateTool(_JobToolBase):
             if ":dm:" in self._session_key else ""
         try:
             if str(args.get("cron") or "").strip():
-                from naga.jobs import JobSpec
+                from deepseek_bot.jobs import JobSpec
                 spec = JobSpec(
                     job_id="job_" + __import__("uuid").uuid4().hex[:20],
                     schedule=str(args["cron"]).strip(),
@@ -176,7 +176,7 @@ class JobCreateTool(_JobToolBase):
             jid = JobStore(self._ledger).create(spec, actor=self._session_key)
         except ValueError as err:
             return {"error": f"JOBS.INVALID: {err}"}
-        from naga.jobs import fires_per_month
+        from deepseek_bot.jobs import fires_per_month
         return {"job_id": jid, "cron": spec.schedule, "goal": spec.goal,
                 "timezone": spec.timezone,
                 "fires_per_month": fires_per_month(spec.schedule,

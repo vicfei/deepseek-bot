@@ -28,19 +28,35 @@ LAYOUT_DIRS = (
 PRIVATE_DIRS = frozenset({"credentials", "keys", "keys/escrow"})
 
 
-def resolve_home(explicit: str | None = None) -> str:
-    """home 解析优先级:显式参数 > NAGA_HOME > SAMSARA_HOME(兼容别名)> ~/.naga。
+def env_opt(name: str) -> str | None:
+    """读 DEEPSEEK_BOT_<name>,回退 NAGA_<name>(2026-11 改名批兼容窗口)。"""
+    for prefix in ("DEEPSEEK_BOT_", "NAGA_"):
+        value = os.environ.get(prefix + name)
+        if value:
+            return value
+    return None
 
-    与代号对齐:TS 路线 Samsara 用 ~/.samsara,Python 路线 Naga 用 ~/.naga
-    (数据模型 §2 只定义了 ~/.samsara——规格缺口见 issue #30)。
-    """
+
+def _default_home() -> str:
+    """默认 home:新装 ~/.deepseek-bot;存量 ~/.naga 存在且新名不存在则沿用
+    (soak 时钟/账本/凭据/密钥连续性优先;目录迁移属显式动作,不静默搬家)。"""
+    modern = os.path.expanduser("~/.deepseek-bot")
+    legacy = os.path.expanduser("~/.naga")
+    if not os.path.exists(modern) and os.path.isdir(legacy):
+        return legacy
+    return modern
+
+
+def resolve_home(explicit: str | None = None) -> str:
+    """home 解析优先级:显式参数 > DEEPSEEK_BOT_HOME > NAGA_HOME(兼容)>
+    SAMSARA_HOME(兼容别名)> 默认(_default_home)。"""
     if explicit:
         return explicit
-    for env in ("NAGA_HOME", "SAMSARA_HOME"):
+    for env in ("DEEPSEEK_BOT_HOME", "NAGA_HOME", "SAMSARA_HOME"):
         value = os.environ.get(env)
         if value:
             return value
-    return os.path.join(os.path.expanduser("~"), ".naga")
+    return _default_home()
 
 
 def init_home(home: str | None = None) -> str:

@@ -1,8 +1,8 @@
-"""Naga CLI(M0 最小面,主文档附录 I.1:CLI 最先可用)。
+"""DeepSeek Bot CLI(主文档附录 I.1:CLI 最先可用)。
 
 子命令:daemon start|stop|status(生命周期)、doctor(自检:布局/账本链/
 快照/宪法哈希占位)。--json 输出机器可读(接口文档 §7 约定:幂等可脚本化)。
-命令名 naga——Samsara 双轨赛马中 Python 路线的本地入口。
+命令名 deepseek-bot(前代号 naga,2026-11 定名)。
 """
 
 from __future__ import annotations
@@ -17,8 +17,8 @@ import sys
 import time
 from typing import Any, cast
 
-from naga import storage
-from naga.ledger_store import DurableLedger
+from deepseek_bot import storage
+from deepseek_bot.ledger_store import DurableLedger
 
 _WAIT_SEC = 5.0
 
@@ -70,7 +70,7 @@ def cmd_daemon(args: argparse.Namespace) -> int:
         log_fh = open(log_path, "ab", buffering=0)  # noqa: SIM115 —— 句柄由子进程继承
         os.chmod(log_path, 0o600)
         subprocess.Popen(
-            [sys.executable, "-m", "naga.daemon", home],
+            [sys.executable, "-m", "deepseek_bot.daemon", home],
             start_new_session=True, stdin=subprocess.DEVNULL,
             stdout=log_fh, stderr=subprocess.STDOUT)
         log_fh.close()
@@ -97,7 +97,7 @@ def cmd_daemon(args: argparse.Namespace) -> int:
 
 
 def _constitution_report(home: str) -> dict[str, Any]:
-    from naga import constitution
+    from deepseek_bot import constitution
     led = None
     try:
         led = DurableLedger(home)
@@ -121,7 +121,7 @@ def _constitution_report(home: str) -> dict[str, Any]:
 
 def cmd_soak(args: argparse.Namespace) -> int:
     """soak 报告:30 天时钟 / P0 计数 / 最近心跳(M5 出口①的日常视图)。"""
-    from naga.soak import soak_report
+    from deepseek_bot.soak import soak_report
     home = storage.resolve_home(args.home)
     r = soak_report(home)
     if args.json:
@@ -190,11 +190,11 @@ def cmd_doctor(args: argparse.Namespace) -> int:
 def cmd_run(args: argparse.Namespace) -> int:
     from typing import cast
 
-    from naga import kernel
-    from naga.agent import AgentLoop, AgentResult
-    from naga.llm import CredentialStore, DeepSeekAdapter
-    from naga.skills import SkillStore
-    from naga.tools import WebSearchTool
+    from deepseek_bot import kernel
+    from deepseek_bot.agent import AgentLoop, AgentResult
+    from deepseek_bot.llm import CredentialStore, DeepSeekAdapter
+    from deepseek_bot.skills import SkillStore
+    from deepseek_bot.tools import WebSearchTool
 
     async def scenario() -> AgentResult:
         creds = CredentialStore(os.path.join(home, "credentials", "providers.json"))
@@ -224,8 +224,8 @@ def cmd_run(args: argparse.Namespace) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="naga", description="Naga(Samsara Python 路线)CLI")
-    parser.add_argument("--home", help="数据根目录(默认 SAMSARA_HOME 或 ~/.samsara)")
+    parser = argparse.ArgumentParser(prog="deepseek-bot", description="DeepSeek Bot CLI(自进化个人智能体运行时)")
+    parser.add_argument("--home", help="数据根目录(默认 DEEPSEEK_BOT_HOME 或 ~/.deepseek-bot)")
     parser.add_argument("--json", action="store_true", help="机器可读输出")
     sub = parser.add_subparsers(dest="cmd", required=True)
     d = sub.add_parser("daemon", help="守护进程生命周期")
@@ -285,7 +285,7 @@ def main(argv: list[str] | None = None) -> int:
 
 def cmd_memory(args: argparse.Namespace) -> int:
     """记忆面(§6.5):list 元数据 / show 解密单条 / forget 精确遗忘。"""
-    from naga.memory import MemoryStore
+    from deepseek_bot.memory import MemoryStore
 
     home = storage.resolve_home(args.home)
     led = DurableLedger.open(home)
@@ -342,7 +342,7 @@ async def _ws_call(method: str, params: dict[str, Any],
     """回环 WS 单次调用(hello → req → res;CLI 与 daemon 同进程拓扑)。"""
     import aiohttp
 
-    port = int(os.environ.get("NAGA_WS_PORT", "18789"))
+    port = int(storage.env_opt("WS_PORT") or "18789")
     async with aiohttp.ClientSession() as session, \
             session.ws_connect(f"ws://127.0.0.1:{port}/gw") as ws:
         await ws.send_json({"type": "hello", "proto": "samsara/1"})
@@ -498,7 +498,7 @@ def cmd_routing(args: argparse.Namespace) -> int:
     import json as _json
     import urllib.request
 
-    port = int(os.environ.get("NAGA_WS_PORT", "18789"))
+    port = int(storage.env_opt("WS_PORT") or "18789")
     try:
         with urllib.request.urlopen(
                 f"http://127.0.0.1:{port}/routing/stats", timeout=5) as resp:

@@ -12,9 +12,9 @@ from typing import Any
 
 import aiohttp
 
-from naga.gateway import FRAME_MAX_BYTES, Gateway
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
+from deepseek_bot.gateway import FRAME_MAX_BYTES, Gateway
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
 
 _HELLO = {"type": "hello", "proto": "samsara/1", "auth": {"token": ""},
           "device": {"id": "t", "platform": "test"}, "role": "client", "caps": []}

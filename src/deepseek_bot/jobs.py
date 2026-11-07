@@ -39,8 +39,8 @@ from typing import Any, cast
 
 from croniter import croniter
 
-from naga.ledger_store import DurableLedger
-from naga.trust import TRUST_LEVELS, derive_trust
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.trust import TRUST_LEVELS, derive_trust
 
 SCHEDULER_TICK_SEC = 30        # 候选 spec-constants job_scheduler_tick_seconds
 JOB_DEFAULT_BUDGET_TOKENS = 200_000  # 候选 job_default_budget_tokens

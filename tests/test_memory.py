@@ -14,13 +14,13 @@ from typing import Any, ClassVar
 
 import pytest
 
-from naga import kernel
-from naga.agent import AgentLoop
-from naga.branch import SessionBranch
-from naga.curator import Curator
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.memory import (
+from deepseek_bot import kernel
+from deepseek_bot.agent import AgentLoop
+from deepseek_bot.branch import SessionBranch
+from deepseek_bot.curator import Curator
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.memory import (
     MEMORY_MAX_BYTES,
     MemoryGateError,
     MemoryPoisonError,
@@ -28,7 +28,7 @@ from naga.memory import (
     parse_distilled,
     render_memory_section,
 )
-from naga.skills import SkillStore
+from deepseek_bot.skills import SkillStore
 
 
 def _store(tmp_path, name="home") -> tuple[DurableLedger, MemoryStore]:
@@ -387,7 +387,7 @@ def test_parse_distilled_and_render_section():
     assert parse_distilled("没有标记的输出") == (None, [])
     block = render_memory_section([])
     assert block == ""
-    from naga.memory import MemoryHit
+    from deepseek_bot.memory import MemoryHit
     block = render_memory_section([MemoryHit(cas_id="c", layer="semantic",
                                              content="用户偏好摄氏度")])
     assert "[semantic] 用户偏好摄氏度" in block
@@ -451,7 +451,7 @@ def test_curator_destroys_expired_escrow(tmp_path):
 # ── gateway memory.* 方法面(接口 §3.2) ─────────────────────────
 
 def test_gateway_memory_list_and_forget(tmp_path):
-    from naga.gateway import Gateway
+    from deepseek_bot.gateway import Gateway
 
     async def scenario() -> None:
         led = DurableLedger(str(tmp_path / "gw"))
@@ -486,7 +486,7 @@ def test_gateway_memory_list_and_forget(tmp_path):
 
 
 def test_gateway_memory_forget_disabled(tmp_path):
-    from naga.gateway import Gateway, GatewayError
+    from deepseek_bot.gateway import Gateway, GatewayError
 
     async def scenario() -> None:
         led = DurableLedger(str(tmp_path / "gw2"))
@@ -502,7 +502,7 @@ def test_gateway_memory_forget_disabled(tmp_path):
 # ── CLI ──────────────────────────────────────────────────────────
 
 def test_cli_memory_lifecycle(tmp_path, capsys):
-    from naga.cli import main
+    from deepseek_bot.cli import main
 
     home = str(tmp_path / "cli")
     led = DurableLedger(home)

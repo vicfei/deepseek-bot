@@ -1,7 +1,7 @@
 import os
 import stat
 
-from naga.storage import LAYOUT_DIRS, PRIVATE_DIRS, init_home, resolve_home
+from deepseek_bot.storage import LAYOUT_DIRS, PRIVATE_DIRS, init_home, resolve_home
 
 
 def test_layout_created_idempotent(tmp_path):
@@ -22,13 +22,22 @@ def test_private_dirs_are_0700(tmp_path):
 
 def test_home_priority(tmp_path, monkeypatch):
     explicit = str(tmp_path / "explicit")
+    dsb_home = str(tmp_path / "dsbhome")
     naga_home = str(tmp_path / "nagahome")
     samsara_home = str(tmp_path / "samsarahome")
+    monkeypatch.setenv("DEEPSEEK_BOT_HOME", dsb_home)
     monkeypatch.setenv("NAGA_HOME", naga_home)
     monkeypatch.setenv("SAMSARA_HOME", samsara_home)
     assert resolve_home(explicit) == explicit
-    assert resolve_home() == naga_home          # NAGA_HOME 优先
+    assert resolve_home() == dsb_home           # DEEPSEEK_BOT_HOME 优先
+    monkeypatch.delenv("DEEPSEEK_BOT_HOME")
+    assert resolve_home() == naga_home          # NAGA_HOME 兼容回退
     monkeypatch.delenv("NAGA_HOME")
     assert resolve_home() == samsara_home       # SAMSARA_HOME 兼容别名
     monkeypatch.delenv("SAMSARA_HOME")
-    assert resolve_home().endswith(".naga")     # 默认与代号对齐(issue #30)
+    monkeypatch.setenv("HOME", str(tmp_path))   # 隔离真实 home,默认值可测
+    assert resolve_home().endswith(".deepseek-bot")   # 新装默认
+    (tmp_path / ".naga").mkdir()                # 存量部署:沿用旧 home(连续性)
+    assert resolve_home().endswith(".naga")
+    (tmp_path / ".deepseek-bot").mkdir()        # 新名一旦出现即切换
+    assert resolve_home().endswith(".deepseek-bot")

@@ -4,9 +4,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from naga import cli
+from deepseek_bot import cli
 
-_WEBCHAT = Path(__file__).parent.parent / "src" / "naga" / "webchat" / "index.html"
+_WEBCHAT = Path(__file__).parent.parent / "src" / "deepseek_bot" / "webchat" / "index.html"
 
 
 def test_webchat_has_routing_panel_hooks():

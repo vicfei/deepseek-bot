@@ -2,7 +2,7 @@
 
 import asyncio
 
-from naga import kernel
+from deepseek_bot import kernel
 
 
 def test_seed_suite_t1_t27(capsys):

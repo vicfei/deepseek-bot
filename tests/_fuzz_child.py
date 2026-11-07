@@ -18,7 +18,7 @@ import os
 import random
 import sys
 
-from naga.ledger_store import DurableLedger
+from deepseek_bot.ledger_store import DurableLedger
 
 KINDS = [
     "effect.register",
@@ -46,7 +46,7 @@ def main() -> None:
     rng = random.Random(seed)
 
     if mode == "midappend":
-        import naga.ledger_store as ls
+        import deepseek_bot.ledger_store as ls
 
         orig = ls.DurableLedger._project
         state = {"n": 0}

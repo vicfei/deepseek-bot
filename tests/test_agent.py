@@ -7,11 +7,11 @@ from typing import Any, ClassVar
 
 import pytest
 
-from naga import kernel
-from naga.agent import AgentLoop
-from naga.ledger_store import DurableLedger
-from naga.llm import ChatResponse
-from naga.skills import SkillStore
+from deepseek_bot import kernel
+from deepseek_bot.agent import AgentLoop
+from deepseek_bot.ledger_store import DurableLedger
+from deepseek_bot.llm import ChatResponse
+from deepseek_bot.skills import SkillStore
 
 CRED_PATH = os.path.join(os.path.expanduser("~"), ".samsara", "credentials", "providers.json")
 
@@ -161,8 +161,8 @@ def test_secret_never_enters_bundle(tmp_path):
 @pytest.mark.skipif(not (os.environ.get("SAMSARA_SMOKE") and os.path.exists(CRED_PATH)),
                     reason="真实 API 烟测需 SAMSARA_SMOKE=1 且凭据仓存在")
 def test_real_smoke_deepseek_and_bocha(tmp_path):
-    from naga.llm import CredentialStore, DeepSeekAdapter
-    from naga.tools import WebSearchTool
+    from deepseek_bot.llm import CredentialStore, DeepSeekAdapter
+    from deepseek_bot.tools import WebSearchTool
 
     async def scenario():
         creds = CredentialStore()
