@@ -1,5 +1,6 @@
-# 发布到 PyPI(trusted publishing/OIDC,零密钥):打 v* tag 触发。
-# 首启前提:PyPI 侧已配置 pending publisher(见 docs/research 或 README)。
+# 发布到 PyPI(API token 路径):打 v* tag 触发。
+# 令牌存 GitHub Secret PYPI_API_TOKEN;项目在 PyPI 落地后可换 trusted
+# publishing(OIDC,免密)并撤掉令牌——两条路径等价,后者更优。
 name: release
 
 on:
@@ -27,12 +28,11 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    environment: pypi  # 须与 PyPI pending publisher 配置的 environment 一致
-    permissions:
-      id-token: write  # OIDC:PyPI 按仓库+工作流+环境签发发布权,无任何存密
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
