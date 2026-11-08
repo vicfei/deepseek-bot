@@ -126,10 +126,11 @@ python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 .venv/bin/pyright src                  # strict 类型检查
 ```
 
-或直接从 git 安装(项目已按 pip 打包):
+或从 PyPI 安装:
 
 ```bash
-pip install git+https://github.com/vicfei/deepseek-bot.git
+pip install deepseek-bot          # 正式发布版
+# 或直装 git 版: pip install git+https://github.com/vicfei/deepseek-bot.git
 ```
 
 运行 daemon(回环网关 + 微信渠道)另需凭据文件

@@ -143,10 +143,11 @@ python3 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 .venv/bin/pyright src                  # strict type check
 ```
 
-Or install straight from git — the project is pip-packaged:
+Or install from PyPI:
 
 ```bash
-pip install git+https://github.com/vicfei/deepseek-bot.git
+pip install deepseek-bot          # released builds
+# or straight from git: pip install git+https://github.com/vicfei/deepseek-bot.git
 ```
 
 Running the daemon (gateway on loopback + WeChat channel) additionally needs a

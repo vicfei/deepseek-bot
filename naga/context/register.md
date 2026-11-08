@@ -520,3 +520,9 @@
 - **生产调研任务(真实验证据链)**:经 WS(agent.run,先 hello 握手 proto samsara/1)提交 life-distributable 调研,真实 deepseek 29,768 tokens,trace tr_e68436f7…。**bot 四轮搜索后诚实报告"无公开踪迹"拒绝编造**(bocha 索引小仓库覆盖缺口),推演全部标注"待核实"——诚实降级本身就是证据链价值;URL 抓取工具缺口加速知识摄入批排队。
 - **对外(issue #163 + star)**:深读其 ops/ 能力面与安全模型(审批门=decider code SHA-256;separate-user 可选;session-user-audit PASS/FAIL;backup.sh 的 ask 升级习语)后,以我方"可审计"视角提 issue #163:①advisory 门在 Approve 时刻可见(badge)②夜跑墙审计 FAIL 升级为 ask——全用其自有机制表述。star 已回。回信草稿交用户。
 - 里程碑:项目第一次收到外部代码级 issue、第一次对外留 issue——0→1 社区信号,登记在案。
+
+## 2026-11-08 PyPI 首发 0.2.0 落地(四跳三败后的第五跳)
+
+- **`pip install deepseek-bot` 全网可用**(PyPI JSON API 200;公网 fresh venv 安装终验:CLI 八命令可用 + webchat 页面在包内)。发布路径:pypi-AgEI token 三次 403 invalid-auth(用法/完整性/邮箱逐项排除,token 在账号页显示有效但 Last used: Never——判为平台对新账号的 token 防护)→ 切 trusted publishing(OIDC)→ 首跑 invalid-publisher(用户表单首提交未落库)→ 重提落位(Environment=(Any) 匹配无环境声明的工作流)→ rerun 成功。tag v0.2.0(重打两次,最终指向 OIDC 版工作流提交);GitHub Secret PYPI_API_TOKEN 已清(死凭据);README 双语安装段升级 PyPI 为主路径。
+- 经验沉淀:①pipx 装的 build 不支持 `python -m build`(模块不在解释器);②pip 对新 PyPI 项目有分钟级索引传播延迟(API 200 ≠ 立即可装);③pending publisher 提交成功判据=Pending 表格出现记录行,不能只看表单消失;④新 PyPI 账号 token 可能不可用,trusted publishing 是新号首发最稳路径(PyPI 自己也推荐)。
+- 用户 PyPI 账号 cnfeichen(邮箱双验证/2FA TOTP/恢复码 7 未用/GitHub vicfei 已关联);首发后 pending publisher 自动转正为项目级 trusted publisher,后续打 tag 即发版。建议用户择期删除账号里从未生效的 zcode_dsh_bot token。
