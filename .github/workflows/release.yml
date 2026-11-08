@@ -1,6 +1,6 @@
-# 发布到 PyPI(API token 路径):打 v* tag 触发。
-# 令牌存 GitHub Secret PYPI_API_TOKEN;项目在 PyPI 落地后可换 trusted
-# publishing(OIDC,免密)并撤掉令牌——两条路径等价,后者更优。
+# 发布到 PyPI(trusted publishing/OIDC,零密钥):打 v* tag 触发。
+# 前提:PyPI Publishing 页已配置 pending publisher(owner=vicfei,
+# repo=deepseek-bot, workflow=release.yml, environment 留空)。
 name: release
 
 on:
@@ -19,7 +19,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install build twine
       - run: python -m build
-      - run: twine check dist/*
+      - run: python -m twine check dist/*
       - uses: actions/upload-artifact@v4
         with:
           name: dist
@@ -28,11 +28,11 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # OIDC:PyPI 按仓库+工作流签发一次性发布凭据,零存密
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
       - uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
