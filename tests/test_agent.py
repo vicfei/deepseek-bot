@@ -177,3 +177,33 @@ def test_real_smoke_deepseek_and_bocha(tmp_path):
 
     ct, n = asyncio.run(scenario())
     print(f"\nsmoke: completion_tokens={ct}, hits={n}")
+
+
+def test_malformed_tool_args_become_failed_step(tmp_path):
+    """#97:模型返回非法 JSON 工具参数(截断输出)——降级为 ok=False 失败步,
+    模型看到错误可继续;轨迹收尾、任务不死、循环不炸。"""
+    led = DurableLedger(str(tmp_path / "home"))
+    tool = FakeTool()
+    adapter = FakeAdapter([
+        ChatResponse(content=None, tool_calls=[
+            {"id": "c1", "name": "web_search",
+             "arguments": '{"query": "trunc'}],  # 截断的非法 JSON
+            prompt_tokens=10, completion_tokens=20),
+        ChatResponse(content="已从失败的工具调用恢复。", prompt_tokens=30, completion_tokens=40),
+    ])
+    agent = _agent(led, adapter, [tool])
+    result = asyncio.run(agent.run("调研 malformed 项目"))
+
+    assert result.outcome == "success"  # 任务不死:模型看到失败步后正常收尾
+    assert tool.calls == []             # 参数解析失败,工具从未被调用
+    tool_msg = next(m for m in adapter.seen[-1] if m.get("role") == "tool")
+    assert "JSONDecodeError" in tool_msg["content"]  # 失败原因回传给模型(可自纠)
+    trace_row = led.query(
+        "SELECT trace_id, outcome, tokens, replay_bundle_cas FROM traces")[0]
+    assert trace_row[1] == "success"    # 轨迹照常收尾(#97 次生影响一并闭环)
+    bundle = json.loads(led.cas.get(trace_row[3]))
+    tool_step = next(s for s in bundle["steps"] if s["kind"] == "tool")
+    assert tool_step["ok"] is False                    # 记为失败步而非异常
+    assert tool_step["args"]["data"] == '{"query": "trunc'  # 原始串入轨迹
+    assert "JSONDecodeError" in tool_step["results"]["data"]["error"]
+    led.close()

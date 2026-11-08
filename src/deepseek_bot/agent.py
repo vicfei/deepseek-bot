@@ -162,12 +162,14 @@ class AgentLoop:
                 lines += [f"### {uri}", body]
         return "\n".join(lines)
 
-    async def _call_tool(self, tc: dict[str, Any]) -> tuple[Any, bool, int]:
+    async def _call_tool(self, tc: dict[str, Any]) -> tuple[Any, bool, int, Any]:
         name = str(tc.get("name", ""))
         tool = self._tools.get(name)
+        raw = tc.get("arguments")
         t0 = time.monotonic()
+        args: Any = None
         try:
-            args = json.loads(tc.get("arguments") or "{}")
+            args = json.loads(raw or "{}")
             if tool is None:
                 raise ValueError(f"unknown tool: {name}")
 
@@ -178,9 +180,11 @@ class AgentLoop:
             ok = True
         except Exception as err:  # noqa: BLE001 —— 工具失败=ok=False 步(K.1),
             # 不得杀死任务:网络错/worker 崩溃/参数错一律降级续跑(出口③前提)
+            if args is None:  # 参数不可解析(#97):截断原始串入轨迹,循环不炸
+                args = raw[:200] if isinstance(raw, str) else raw
             result = {"error": f"{type(err).__name__}: {err}"}
             ok = False
-        return result, ok, int((time.monotonic() - t0) * 1000)
+        return result, ok, int((time.monotonic() - t0) * 1000), args
 
     async def run(self, goal: str) -> AgentResult:
         skills = self._select_skills(goal)
@@ -234,8 +238,9 @@ class AgentLoop:
                                                        "arguments": tc["arguments"]}}
                                          for tc in resp.tool_calls]})
                     for tc in resp.tool_calls:
-                        args = json.loads(tc.get("arguments") or "{}")
-                        result, ok, tool_ms = await self._call_tool(tc)
+                        # 解析在 _call_tool 内(#97):坏 JSON 参数=ok=False 失败步,
+                        # 模型可看到错误并重试,轨迹/分支照常收尾——循环不再裸解析
+                        result, ok, tool_ms, args = await self._call_tool(tc)
                         self._tool_steps += 1
                         self._tool_log.append({"tool": str(tc["name"]), "args": args})
                         self._step_seq += 1
