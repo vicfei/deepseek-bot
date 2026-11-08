@@ -512,3 +512,11 @@
 - 用户拍板"发吧"。发行名 `deepseek-bot` 已核空闲;走 **trusted publishing(OIDC)**——零存密:PyPI 按(owner=vicfei, repo=deepseek-bot, workflow=release.yml, environment=pypi)签发发布权。节点无 .pypirc/无 secret,该路径不引入任何密钥。
 - pyproject 发布元数据补齐:readme/license(MIT, SPDX)/license-files/urls/keywords/classifiers;build requires 升 setuptools>=77(PEP 639)。release.yml:tag v* 触发 → build+sdist+wheel+twine check → environment=pypi + id-token:write 发布。本地预验证:sdist+wheel 构建,twine check 双 PASSED。
 - **挂起项**:PyPI pending publisher 需用户网页配置(账号+2FA 后 Publishing → Add a new pending publisher,四值如上);配置后推 tag v0.2.0 即自动首发。商标注记同前(名称含 DeepSeek 无隶属,Lineage 免责在 README)。
+
+## 2026-11-08 第一个外部贡献者互动(mattabate / life-distributable)
+
+- **#97 事件**:外部贡献者 mattabate(自托管 Mac Claude Code 智能体团队 life-distributable,356★,Go hub + SwiftUI)读旧码(dsh-dot 时代路径)提了教科书级 issue:AgentLoop 主循环裸 json.loads 解析 tool 参数,坏 JSON 炸穿 run()(任务死/轨迹不收尾/分支悬空)——五要素齐全(现象/根因/定位/次生/修法),逐行核验属实。
+- **修复 PR #101**(Fixes #97 自动关单):按其建议解析下沉 _call_tool 并随返回值带出(解析失败=截断原始串入轨迹);回归测试钉死全契约(任务活/工具零调用/模型收到 JSONDecodeError/轨迹收尾/bundle 记 ok=False)。352+1 绿。issue 公开英文回复致谢;daemon 已重启部署(soak 23.52/30 连续 P0=0,双绑定恢复)。
+- **生产调研任务(真实验证据链)**:经 WS(agent.run,先 hello 握手 proto samsara/1)提交 life-distributable 调研,真实 deepseek 29,768 tokens,trace tr_e68436f7…。**bot 四轮搜索后诚实报告"无公开踪迹"拒绝编造**(bocha 索引小仓库覆盖缺口),推演全部标注"待核实"——诚实降级本身就是证据链价值;URL 抓取工具缺口加速知识摄入批排队。
+- **对外(issue #163 + star)**:深读其 ops/ 能力面与安全模型(审批门=decider code SHA-256;separate-user 可选;session-user-audit PASS/FAIL;backup.sh 的 ask 升级习语)后,以我方"可审计"视角提 issue #163:①advisory 门在 Approve 时刻可见(badge)②夜跑墙审计 FAIL 升级为 ask——全用其自有机制表述。star 已回。回信草稿交用户。
+- 里程碑:项目第一次收到外部代码级 issue、第一次对外留 issue——0→1 社区信号,登记在案。
