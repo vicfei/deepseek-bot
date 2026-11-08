@@ -1,12 +1,23 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]  # PEP 639 SPDX license 表达式
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "deepseek-bot"
 version = "0.2.0"
 description = "DeepSeek Bot: self-evolving AI agent runtime — RSI under tiered authority, reversible ledger, capability security, crash-contained plugins"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12"  # type 语句(递归类型别名)依赖 3.12;本机与 CI 均为 3.12
+keywords = ["ai-agent", "personal-agent", "self-evolving", "ledger", "wechat", "deepseek"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
   "zstandard>=0.23",  # 快照 tar.zst(数据模型 §3.2);>=0.23 含类型标注
   "pydantic>=2.5",    # 协议边界模型(Naga 纪律③;磁盘行 LedgerLine)
@@ -17,6 +28,11 @@ dependencies = [
   "cryptography>=42", # 微信媒体 AES-128-ECB 解密(M2-W3)
   "croniter>=2",      # 定时任务 cron 解析与下次触发推算(附录 C)
 ]
+
+[project.urls]
+Homepage = "https://github.com/vicfei/deepseek-bot"
+Repository = "https://github.com/vicfei/deepseek-bot"
+Issues = "https://github.com/vicfei/deepseek-bot/issues"
 
 [project.optional-dependencies]
 dev = [
