@@ -1,0 +1,38 @@
+# 发布到 PyPI(trusted publishing/OIDC,零密钥):打 v* tag 触发。
+# 首启前提:PyPI 侧已配置 pending publisher(见 docs/research 或 README)。
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pipx install build twine
+      - run: python -m build
+      - run: twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi  # 须与 PyPI pending publisher 配置的 environment 一致
+    permissions:
+      id-token: write  # OIDC:PyPI 按仓库+工作流+环境签发发布权,无任何存密
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

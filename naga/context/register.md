@@ -506,3 +506,9 @@
 - 三门绿(351+1 skip 基线不变)+ 冻结 20/20;部署序列:停 daemon → 拉 main → pip 重装 → 重锚 → 启动验证(soak 天数连续性为验收项)。
 - agent 自我身份提示词、CLI prog、WebChat 占位文案同步 DeepSeek Bot。更名链终稿:Naga→GrowBuddy→PersonalAgent→dsh dot→**deepseek bot**(公开)/naga→**deepseek_bot**(代码)。
 - 部署结果(11-07):停机干净(clean_shutdown=True)→ 重装(卸 naga-0.1.0,deepseek-bot 0.2.0)→ **宪法重锚 6b6291db…→d943bdf4…**(部署前先只读求值证明漂移真实存在,重锚入账后 verify=match)→ 启动即绿:宪法 anchor=match / **soak 22.88/30 连续 P0=0** / bindings=2 双渠道轮询 / doctor 1229 条链 ok。git 直装公开 URL 端到端验证(fresh venv pip install git+ → CLI 可用 + webchat 页面在包内——盲点修复随真实工件复证)。
+
+## 2026-11-08 PyPI 发布就绪(trusted publishing,等用户 PyPI 侧一步)
+
+- 用户拍板"发吧"。发行名 `deepseek-bot` 已核空闲;走 **trusted publishing(OIDC)**——零存密:PyPI 按(owner=vicfei, repo=deepseek-bot, workflow=release.yml, environment=pypi)签发发布权。节点无 .pypirc/无 secret,该路径不引入任何密钥。
+- pyproject 发布元数据补齐:readme/license(MIT, SPDX)/license-files/urls/keywords/classifiers;build requires 升 setuptools>=77(PEP 639)。release.yml:tag v* 触发 → build+sdist+wheel+twine check → environment=pypi + id-token:write 发布。本地预验证:sdist+wheel 构建,twine check 双 PASSED。
+- **挂起项**:PyPI pending publisher 需用户网页配置(账号+2FA 后 Publishing → Add a new pending publisher,四值如上);配置后推 tag v0.2.0 即自动首发。商标注记同前(名称含 DeepSeek 无隶属,Lineage 免责在 README)。
