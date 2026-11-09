@@ -38,18 +38,18 @@ def env_opt(name: str) -> str | None:
 
 
 def _default_home() -> str:
-    """默认 home:新装 ~/.deepseek-bot;存量 ~/.naga 存在且新名不存在则沿用
-    (soak 时钟/账本/凭据/密钥连续性优先;目录迁移属显式动作,不静默搬家)。"""
-    modern = os.path.expanduser("~/.deepseek-bot")
-    legacy = os.path.expanduser("~/.naga")
+    """默认 home:~/.naga(与代号对齐)。存量 ~/.deepseek-bot 存在且新名不存在
+    则沿用(soak 时钟/账本/凭据/密钥连续性优先;目录迁移属显式动作,不静默搬家)。"""
+    modern = os.path.expanduser("~/.naga")
+    legacy = os.path.expanduser("~/.deepseek-bot")
     if not os.path.exists(modern) and os.path.isdir(legacy):
         return legacy
     return modern
 
 
 def resolve_home(explicit: str | None = None) -> str:
-    """home 解析优先级:显式参数 > DEEPSEEK_BOT_HOME > NAGA_HOME(兼容)>
-    SAMSARA_HOME(兼容别名)> 默认(_default_home)。"""
+    """home 解析优先级:显式参数 > DEEPSEEK_BOT_HOME > NAGA_HOME >
+    SAMSARA_HOME(兼容别名)> 默认 ~/.naga。"""
     if explicit:
         return explicit
     for env in ("DEEPSEEK_BOT_HOME", "NAGA_HOME", "SAMSARA_HOME"):
