@@ -49,6 +49,7 @@ def test_system_status_owner_vs_guest(tmp_path):
     owner = SystemStatusTool(led, home, "owner")
     out = asyncio.run(owner.run({}))
     assert out["jobs_active"] and out["jobs_active"][0]["cron"] == "0 7 * * *"
+    assert out["jobs_active"][0]["goal"] == "摘要"  # #108 自省面:goal 明文经 CAS 解出
     assert out["notify_pending"] == {}
     assert out["recent_deliveries"][-1]["outcome"] == "queued"
     guest = SystemStatusTool(led, home, "guest")
@@ -64,6 +65,22 @@ def _job_spec():
                    timezone="Asia/Shanghai", goal="摘要",
                    trust_snapshot="owner",
                    budget={"tokens": 1000, "wall_ms": 60000}, r_ceiling="R1")
+
+
+def test_system_status_goal_degrade(tmp_path, monkeypatch):
+    """#108 降级路径:goal 的 CAS 解不开时给占位文案,绝不炸整个状态面板。"""
+    led = _led(tmp_path)
+    led.append("session.open", "u", {"session_key": "wechat:dm:u",
+                                     "trust": "owner"})
+    JobStore(led).create(_job_spec())
+    monkeypatch.setattr(led.cas, "get",
+                        lambda cas_id: (_ for _ in ()).throw(FileNotFoundError(cas_id)))
+    owner = SystemStatusTool(led, led.home, "owner")
+    out = asyncio.run(owner.run({}))
+    entry = out["jobs_active"][0]
+    assert entry["goal"].startswith("(goal 不可解")
+    assert entry["cron"] == "0 7 * * *"  # 面板其余部分照常
+    led.close()
 
 
 def test_record_delivery_ring_cap(tmp_path):
