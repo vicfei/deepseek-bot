@@ -67,10 +67,11 @@ class SystemStatusTool:
     """R0 只读自省:读投影与状态文件,零新 kind;按信任过滤 ops 细节。"""
 
     name = "system_status"
-    description = ("查询本运行时的实时状态:定时任务与最近触发、通知投递三态"
-                   "(送达/被拒入队/已补发)、补发积压、会话/记忆/技能概况。"
-                   "凡用户问到'你有没有定时器''为什么没推送''你现在能做什么'"
-                   "类问题,先调用本工具再回答。")
+    description = ("查询本运行时的实时状态:定时任务(含任务目标明文)与最近触发、"
+                   "通知投递三态(送达/被拒入队/已补发)、补发积压、"
+                   "会话/记忆/技能概况。凡用户问到'你有没有定时器''你的定时任务"
+                   "在做什么''为什么没推送''你现在能做什么'类问题,先调用本工具"
+                   "再回答。")
     parameters: ClassVar[dict[str, Any]] = {"type": "object",
                                             "properties": {}}
     risk_level = 0
@@ -80,6 +81,13 @@ class SystemStatusTool:
         self._home = home
         self._trust = actor_trust or "owner"
         self.calls: list[dict[str, Any]] = []
+
+    def _goal_text(self, goal_cas: str) -> str:
+        """goal 的 CAS 明文(#108 自省面缺口);解引用失败降级,不炸整表。"""
+        try:
+            return self._ledger.cas.get(goal_cas).decode("utf-8")
+        except (OSError, ValueError):
+            return f"(goal 不可解: {goal_cas.removeprefix('sha256:')[:8]})"
 
     async def run(self, args: dict[str, Any]) -> dict[str, Any]:
         self.calls.append(dict(args))
@@ -101,6 +109,7 @@ class SystemStatusTool:
                 entry: dict[str, Any] = {
                     "id": row["id"], "cron": row["schedule"],
                     "timezone": row["timezone"],
+                    "goal": self._goal_text(str(row["goal_cas"])),
                     "last_fire": slot.get("last_fire")}
                 jobs.append(entry)
             pending = load_pending(
