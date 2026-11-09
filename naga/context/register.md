@@ -532,3 +532,10 @@
 - 带话背景:watch agent(vicfei-dsh-agent[bot],auto 档,PR 人审)在本仓实测能力包络——能做:少文件/目标明确/机械/测试自证(实证 storage.py 12 行 352 绿);做不了:#11 级内核架构(flash 20 轮不收敛)、#29 提案类。记分牌 1 PR 0 合并(语义回退关闭,关得对),请主窗口按包络选题开单。
 - 选题 **#108**:system_status 的 jobs_active 条目补 goal 明文——**生产 agent 自报痛点**(E'''' 随访项之一:被问"每天推什么"答不上来)。包络契合:单源文件 system_tools.py + 扩展既有测试;关键事实全部核对现行代码(goal_cas 行键/JobGoalLazy 解引用范式/test_introspect.py:41 可扩断言)——吸取 watch 侧"过时规格手术单"教训。工单含完整验收标准(三门绿/只读增量/信任门不动)。
 - 该任务同时是随访合批三件套之一(goal 文本/notify 三态入账/naga usage)的分解——若 watch 交付则主窗口少一件;WORKER_MODEL 是否升档(#106 那类硬骨头的前提)留用户定夺。
+
+## 2026-11-08 狗粮公平一战胜局:PR #109 合并 + 生产实证(dogfood 首合并)
+
+- **#108 → PR #109 合并**(cb344e7,门禁双绿后 merge;worker 源码改动 fc47d5e + 运营侧补测 cc5a2b5)。bot(vicfei-dsh-agent)以真实有用现行改动进入 contributors——**记分牌:交付 2 PR、合并 1**。主窗口独立复核不止战报:例外元组 (OSError, ValueError) 对 cas.get+decode 的全部常规异常面覆盖实证(FileNotFoundError⊂OSError;pydantic ValidationError⊂ValueError;UnicodeDecodeError⊂ValueError)——选对非运气。
+- 部署与实证:daemon 重启(soak 连续/bindings=2),生产 WS 问"定时任务在做什么"——agent 经 system_status 复述 goal 全文(科技新闻早报 0 7 * * * 完整目标文本),另主动汇报补发队列 4 条积压。**#108 痛点闭环:从"说不出推什么"到一字不差复述。**
+- 教训入库:①worker 三连跳测试(flash 档一致行为),升档前按"人补测试"预算;②**editable 安装测试幻觉**——worktree 里 pytest 实测的是 /home/ubuntu/Naga 树(PYTHONPATH 未前置),本节点今后任何 worktree 跑测必须 PYTHONPATH=<worktree>/src;主会话在树内工作自洽无此坑,CI 全新 checkout 免疫。
+- 随访三件套余二:notify 三态入账、naga usage(usage 仪表盘)。
