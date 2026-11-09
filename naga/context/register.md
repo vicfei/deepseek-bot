@@ -526,3 +526,9 @@
 - **`pip install deepseek-bot` 全网可用**(PyPI JSON API 200;公网 fresh venv 安装终验:CLI 八命令可用 + webchat 页面在包内)。发布路径:pypi-AgEI token 三次 403 invalid-auth(用法/完整性/邮箱逐项排除,token 在账号页显示有效但 Last used: Never——判为平台对新账号的 token 防护)→ 切 trusted publishing(OIDC)→ 首跑 invalid-publisher(用户表单首提交未落库)→ 重提落位(Environment=(Any) 匹配无环境声明的工作流)→ rerun 成功。tag v0.2.0(重打两次,最终指向 OIDC 版工作流提交);GitHub Secret PYPI_API_TOKEN 已清(死凭据);README 双语安装段升级 PyPI 为主路径。
 - 经验沉淀:①pipx 装的 build 不支持 `python -m build`(模块不在解释器);②pip 对新 PyPI 项目有分钟级索引传播延迟(API 200 ≠ 立即可装);③pending publisher 提交成功判据=Pending 表格出现记录行,不能只看表单消失;④新 PyPI 账号 token 可能不可用,trusted publishing 是新号首发最稳路径(PyPI 自己也推荐)。
 - 用户 PyPI 账号 cnfeichen(邮箱双验证/2FA TOTP/恢复码 7 未用/GitHub vicfei 已关联);首发后 pending publisher 自动转正为项目级 trusted publisher,后续打 tag 即发版。建议用户择期删除账号里从未生效的 zcode_dsh_bot token。
+
+## 2026-11-08 dogfood 公平一战选题:#108(dsh-watch 带话执行)
+
+- 带话背景:watch agent(vicfei-dsh-agent[bot],auto 档,PR 人审)在本仓实测能力包络——能做:少文件/目标明确/机械/测试自证(实证 storage.py 12 行 352 绿);做不了:#11 级内核架构(flash 20 轮不收敛)、#29 提案类。记分牌 1 PR 0 合并(语义回退关闭,关得对),请主窗口按包络选题开单。
+- 选题 **#108**:system_status 的 jobs_active 条目补 goal 明文——**生产 agent 自报痛点**(E'''' 随访项之一:被问"每天推什么"答不上来)。包络契合:单源文件 system_tools.py + 扩展既有测试;关键事实全部核对现行代码(goal_cas 行键/JobGoalLazy 解引用范式/test_introspect.py:41 可扩断言)——吸取 watch 侧"过时规格手术单"教训。工单含完整验收标准(三门绿/只读增量/信任门不动)。
+- 该任务同时是随访合批三件套之一(goal 文本/notify 三态入账/naga usage)的分解——若 watch 交付则主窗口少一件;WORKER_MODEL 是否升档(#106 那类硬骨头的前提)留用户定夺。
