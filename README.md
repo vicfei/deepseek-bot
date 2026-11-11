@@ -4,11 +4,17 @@
 
 <p align="center"><img src="assets/banner.svg" alt="DeepSeek Bot — self-evolving personal agent, auditable by construction" width="880"></p>
 
-**A self-evolving AI agent runtime with a reversible, crash-recoverable core.**
+**A personal agent on your chat channels, built to run for months without
+supervision — every action lands in a tamper-evident ledger you can audit
+and roll back.**
 
-DeepSeek Bot is an AI agent that answers on your chat channels, turns experience
-into reusable skills, and treats *every* change it makes to itself as an
-auditable, revertible ledger entry — so autonomy never costs you control.
+DeepSeek Bot answers on WeChat (and the local WebChat console), turns experience
+into reusable skills, and treats *every* change — to your data or to itself —
+as a hash-chained ledger entry. Autonomy never costs you control:
+
+![demo: flip one byte of a historical ledger entry — the runtime refuses to run](assets/demo-tamper.gif)
+
+*(Real output: a live home, one `sed` command, one byte of history changed.)*
 
 [中文版 README](README.zh-CN.md)
 
@@ -85,6 +91,14 @@ Key invariants enforced by the kernel (each backed by tests):
 | INV-4 | Single writer — shared state only via the serial ledger |
 | INV-5 | Constitution unreachable at runtime |
 | INV-6 | Mode ratchet — privileges auto-lower, never auto-raise |
+
+## Companion project
+
+**[dsh-super-agent](https://github.com/vicfei/dsh-super-agent)** — admission
+control, observe mode & tickets for CLI coding agents (Claude Code, Codex, …).
+Same author, same trust-first philosophy, a different surface: that one guards
+coding agents at the gate; this one guards a personal agent over months of
+runtime.
 
 ## The bargain
 
