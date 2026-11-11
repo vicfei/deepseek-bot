@@ -539,3 +539,9 @@
 - 部署与实证:daemon 重启(soak 连续/bindings=2),生产 WS 问"定时任务在做什么"——agent 经 system_status 复述 goal 全文(科技新闻早报 0 7 * * * 完整目标文本),另主动汇报补发队列 4 条积压。**#108 痛点闭环:从"说不出推什么"到一字不差复述。**
 - 教训入库:①worker 三连跳测试(flash 档一致行为),升档前按"人补测试"预算;②**editable 安装测试幻觉**——worktree 里 pytest 实测的是 /home/ubuntu/Naga 树(PYTHONPATH 未前置),本节点今后任何 worktree 跑测必须 PYTHONPATH=<worktree>/src;主会话在树内工作自洽无此坑,CI 全新 checkout 免疫。
 - 随访三件套余二:notify 三态入账、naga usage(usage 仪表盘)。
+
+## 2026-11-11 分发修正批:首屏钩子 + 篡改检测演示(19★ vs 2★ 差距归因执行)
+
+- 归因(用户问"为什么 star 这么少"):dsh-super-agent 19★/11 天 vs deepseek-bot 2★/31 天——选题受众(coding agent 全域 vs 微信个人号+审计窄众)、命名可发现性(super-agent 蹭官方热点 vs 泛名+四次改名累积清零)、分发动作(有投放 vs 零投放)三变量全处劣势;工程质量与社区深度反而领先(外部 PR #109 双向闭环)。结论:改包装不改产品。
+- 执行(PR #110 + 对方 PR #130):①首屏钩子重写双语(受众优先:"跑数月不看不管的个人智能体,动作全进防篡改账本");②**demo-tamper.gif**——真实实验:临时 home 12 事件+宪法锚定→sed 改一笔历史→doctor verify=FAIL(逐帧打字 GIF,920px,同 doctor.gif 配色;memory.write 投影需专字段踩坑一次,换 channel.bound 无投影事件);③Companion 节与 dsh-super-agent 双向互链(其 Related/相关项目节,PR #130 已合,英文锚半角/中文全角破折号各踩一次)。
+- 待办移交用户:真投放(linux.do/V2EX/X/知乎,文案按新钩子重写);**名字第五次改动的禁令**已在案。Octop 对比话术("审计是证据链不是会过期的表")备用。
