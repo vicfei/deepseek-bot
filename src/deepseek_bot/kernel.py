@@ -284,7 +284,14 @@ class Context:
     def on(self, event: str, handler: Callable):
         listeners = self._kernel._listeners.setdefault(event, [])
         listeners.append(handler)
-        self.effect(f'off:{event}', lambda: handler in listeners and listeners.remove(handler))
+
+        def _off() -> None:
+            if handler in listeners:
+                listeners.remove(handler)
+            if not listeners and self._kernel._listeners.get(event) is listeners:
+                del self._kernel._listeners[event]  # #106：清空键，零计数=缺席
+
+        self.effect(f'off:{event}', _off)
 
     def emit(self, event: str, *args):
         listeners = list(self._kernel._listeners.get(event, []))
